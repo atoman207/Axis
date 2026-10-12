@@ -1,0 +1,489 @@
+@import "tailwindcss";
+
+/* `space:` — utilities that only apply while the space theme is active */
+@custom-variant space (&:where([data-theme="space"], [data-theme="space"] *));
+
+/* ========= THEME: WHITE (default) ========= */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* ---- page backdrop ---- */
+  --background: #ffffff;
+  --foreground: #0b1730;
+
+  /* ---- paper (cool off-white) / navy ink ---- */
+  --washi: #f5f8fc;
+  --washi-deep: #e9eff7;
+  --sumi: #0b1730;
+  --gold: #0284c7;
+
+  /* ---- ai (navy scale) — dark surfaces ---- */
+  --ai-50:  #eef2f9;
+  --ai-100: #dbe3f1;
+  --ai-200: #b9c7e2;
+  --ai-300: #8ea3cc;
+  --ai-400: #627bb1;
+  --ai-500: #445d96;
+  --ai-600: #33487a;
+  --ai-700: #283962;
+  --ai-800: #1c2947;
+  --ai-900: #121c33;
+  --ai-950: #0a1122;
+
+  /* ---- shu (brand blue scale) — primary accent ---- */
+  --shu-50:  #eef5ff;
+  --shu-100: #d9e8ff;
+  --shu-200: #b8d3ff;
+  --shu-300: #8ab6ff;
+  --shu-400: #5691fb;
+  --shu-500: #2f6ff2;
+  --shu-600: #1a56db;
+  --shu-700: #1545b4;
+  --shu-800: #153b91;
+  --shu-900: #152f6e;
+  --shu-950: #0e1d47;
+
+  /* ---- gold (sky scale) — secondary accent ---- */
+  --gold-50:  #f0f9ff;
+  --gold-100: #e0f2fe;
+  --gold-200: #bae6fd;
+  --gold-300: #7dd3fc;
+  --gold-400: #38bdf8;
+  --gold-500: #0ea5e9;
+  --gold-600: #0284c7;
+  --gold-700: #0369a1;
+  --gold-800: #075985;
+  --gold-900: #0c4a6e;
+
+  /* ---- surfaces ---- */
+  --band: #f4f7fb;                      /* alternating section tint */
+  --surface: #ffffff;                   /* cards */
+  --popover: #ffffff;                   /* floating panels, always opaque */
+  --sunken: #f4f6f9;
+  --field: #ffffff;
+  --autofill: #ffffff;
+  --chrome: rgba(255, 255, 255, 0.92);  /* header */
+  --footer: var(--ai-950);
+
+  /* ---- hairlines ---- */
+  --line-soft: #eef2f6;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --grid-line: rgba(11, 23, 48, 0.04);
+
+  /* ---- text ---- */
+  --ink-soft: #3b4a63;
+  --muted: #5b6b84;
+  --faint: #8a97ad;
+  --ghost: #cbd5e1;
+
+  /* ---- accents readable on the page backdrop ---- */
+  --accent: var(--shu-600);
+  --accent-strong: var(--shu-700);
+  --accent-alt: var(--gold-600);
+  --gradient-text: linear-gradient(135deg, #2f6ff2 0%, #0ea5e9 55%, #1545b4 100%);
+}
+
+/* ========= THEME: SPACE ========= */
+[data-theme="space"] {
+  color-scheme: dark;
+
+  --background: #03050d;
+  --foreground: #edf2ff;
+
+  --washi: #070b1a;
+  --washi-deep: #0b1126;
+  --sumi: #edf2ff;
+  --gold: #38bdf8;
+
+  /* the palest tints turn into soft glows on a dark sky */
+  --ai-50:  rgba(142, 163, 204, 0.1);
+  --ai-100: rgba(142, 163, 204, 0.2);
+  --ai-200: rgba(142, 163, 204, 0.32);
+  --shu-50:  rgba(86, 145, 251, 0.1);
+  --shu-100: rgba(86, 145, 251, 0.2);
+  --shu-200: rgba(86, 145, 251, 0.34);
+  --gold-50:  rgba(56, 189, 248, 0.08);
+  --gold-100: rgba(56, 189, 248, 0.15);
+  --gold-200: rgba(56, 189, 248, 0.26);
+
+  --band: rgba(110, 124, 255, 0.05);
+  --surface: rgba(10, 15, 34, 0.72);
+  --popover: #0b1124;
+  --sunken: rgba(255, 255, 255, 0.05);
+  --field: rgba(255, 255, 255, 0.05);
+  --autofill: #0d1329;
+  --chrome: rgba(4, 7, 18, 0.7);
+  --footer: rgba(3, 5, 13, 0.78);
+
+  --line-soft: rgba(150, 166, 255, 0.1);
+  --line: rgba(150, 166, 255, 0.17);
+  --line-strong: rgba(150, 166, 255, 0.3);
+  --grid-line: rgba(150, 166, 255, 0.05);
+
+  --ink-soft: #cbd3ea;
+  --muted: #a4aecb;
+  --faint: #8590b2;
+  --ghost: rgba(150, 166, 255, 0.4);
+
+  --accent: #7fb2ff;
+  --accent-strong: #b5d3ff;
+  --accent-alt: #7dd3fc;
+  --gradient-text: linear-gradient(135deg, #7fb2ff 0%, #7dd3fc 50%, #5691fb 100%);
+}
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-washi: var(--washi);
+  --color-washi-deep: var(--washi-deep);
+  --color-sumi: var(--sumi);
+  --color-gold: var(--gold);
+
+  --color-ai-50: var(--ai-50);
+  --color-ai-100: var(--ai-100);
+  --color-ai-200: var(--ai-200);
+  --color-ai-300: var(--ai-300);
+  --color-ai-400: var(--ai-400);
+  --color-ai-500: var(--ai-500);
+  --color-ai-600: var(--ai-600);
+  --color-ai-700: var(--ai-700);
+  --color-ai-800: var(--ai-800);
+  --color-ai-900: var(--ai-900);
+  --color-ai-950: var(--ai-950);
+
+  --color-shu-50: var(--shu-50);
+  --color-shu-100: var(--shu-100);
+  --color-shu-200: var(--shu-200);
+  --color-shu-300: var(--shu-300);
+  --color-shu-400: var(--shu-400);
+  --color-shu-500: var(--shu-500);
+  --color-shu-600: var(--shu-600);
+  --color-shu-700: var(--shu-700);
+  --color-shu-800: var(--shu-800);
+  --color-shu-900: var(--shu-900);
+  --color-shu-950: var(--shu-950);
+
+  --color-gold-50: var(--gold-50);
+  --color-gold-100: var(--gold-100);
+  --color-gold-200: var(--gold-200);
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-gold-700: var(--gold-700);
+  --color-gold-800: var(--gold-800);
+  --color-gold-900: var(--gold-900);
+
+  --color-band: var(--band);
+  --color-surface: var(--surface);
+  --color-popover: var(--popover);
+  --color-sunken: var(--sunken);
+  --color-field: var(--field);
+  --color-chrome: var(--chrome);
+  --color-footer: var(--footer);
+
+  --color-line-soft: var(--line-soft);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-ghost: var(--ghost);
+
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-alt: var(--accent-alt);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ========= TYPOGRAPHY ========= */
+:root {
+  --font-sans: "Noto Sans JP";
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* proportional kana: tighter, more even Japanese headlines */
+  font-feature-settings: "palt";
+  letter-spacing: 0.03em;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), -apple-system, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  overflow-x: hidden;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--sumi);
+  -webkit-box-shadow: 0 0 0 1000px var(--autofill) inset;
+  box-shadow: 0 0 0 1000px var(--autofill) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+#contact form input,
+#contact form textarea,
+#contact .contact-submit-btn {
+  opacity: 1;
+}
+
+#contact .contact-submit-btn:disabled {
+  background-color: var(--shu-700);
+  color: #ffffff;
+  opacity: 1;
+}
+
+/* Section h2 and PageHeader h1 titles — navy ink */
+.section-padding h2,
+.page-header h1 {
+  color: var(--sumi);
+}
+
+/* ========= SCROLLBAR ========= */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--washi-deep); }
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 86, 219, 0.4);
+  border-radius: 2px;
+}
+
+/* ========= GLASS ========= */
+/* Light glass card — washi sections */
+.glass {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(28, 28, 28, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+/* Tinted glass — hero badge */
+.glass-tint {
+  background: rgba(86, 145, 251, 0.08);
+  border: 1px solid rgba(86, 145, 251, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ========= GRADIENT ========= */
+/* brand gradient — blue to sky to deep blue */
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #38bdf8 0%, #1a56db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradient-border {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-border {
+  background: linear-gradient(135deg, #1a56db, #0ea5e9, #121c33, #1a56db);
+  background-size: 300% 300%;
+  animation: gradient-border 4s ease infinite;
+}
+
+.glow-sky {
+  box-shadow: 0 0 40px rgba(86, 145, 251, 0.22), 0 0 80px rgba(14, 165, 233, 0.1);
+}
+
+/* ========= GRID BACKGROUNDS ========= */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.grid-bg-dark {
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ========= WAFU PATTERNS ========= */
+/* Seigaiha (青海波) — nested wave pattern, used as a subtle textured backdrop */
+.seigaiha {
+  background-color: var(--washi);
+  background-image:
+    radial-gradient(circle at 50% 100%, transparent 20%, rgba(18, 28, 51, 0.07) 21%, rgba(18, 28, 51, 0.07) 34%, transparent 35%, transparent 40%, rgba(18, 28, 51, 0.07) 41%, rgba(18, 28, 51, 0.07) 54%, transparent 55%),
+    radial-gradient(circle at 0 100%, transparent 20%, rgba(18, 28, 51, 0.07) 21%, rgba(18, 28, 51, 0.07) 34%, transparent 35%, transparent 40%, rgba(18, 28, 51, 0.07) 41%, rgba(18, 28, 51, 0.07) 54%, transparent 55%),
+    radial-gradient(circle at 100% 100%, transparent 20%, rgba(18, 28, 51, 0.07) 21%, rgba(18, 28, 51, 0.07) 34%, transparent 35%, transparent 40%, rgba(18, 28, 51, 0.07) 41%, rgba(18, 28, 51, 0.07) 54%, transparent 55%);
+  background-size: 60px 30px;
+}
+
+.seigaiha-dark {
+  background-image:
+    radial-gradient(circle at 50% 100%, transparent 20%, rgba(56, 189, 248, 0.1) 21%, rgba(56, 189, 248, 0.1) 34%, transparent 35%, transparent 40%, rgba(56, 189, 248, 0.1) 41%, rgba(56, 189, 248, 0.1) 54%, transparent 55%),
+    radial-gradient(circle at 0 100%, transparent 20%, rgba(56, 189, 248, 0.1) 21%, rgba(56, 189, 248, 0.1) 34%, transparent 35%, transparent 40%, rgba(56, 189, 248, 0.1) 41%, rgba(56, 189, 248, 0.1) 54%, transparent 55%),
+    radial-gradient(circle at 100% 100%, transparent 20%, rgba(56, 189, 248, 0.1) 21%, rgba(56, 189, 248, 0.1) 34%, transparent 35%, transparent 40%, rgba(56, 189, 248, 0.1) 41%, rgba(56, 189, 248, 0.1) 54%, transparent 55%);
+  background-size: 60px 30px;
+}
+
+/* Thin gold hairline divider — 一線 */
+.hairline-gold {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold) 50%, transparent);
+  opacity: 0.55;
+}
+
+/* Hanko (判子) — seal-stamp accent */
+.hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--shu-600);
+  color: #fdf6ea;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(253, 246, 234, 0.25), 0 1px 3px rgba(0, 0, 0, 0.25);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  line-height: 1;
+  writing-mode: vertical-rl;
+  letter-spacing: 0.05em;
+}
+
+/* ========= ICONS ========= */
+/* Monochrome line icons, tinted with the theme accent. Set --icon to url(...). */
+.icon-mask {
+  display: inline-block;
+  background-color: var(--accent);
+  -webkit-mask: var(--icon) center / contain no-repeat;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+/* ========= SPACE BACKDROP ========= */
+/* Painted under the WebGL canvas: shows instantly, and stands in if WebGL is unavailable. */
+.space-backdrop {
+  background-color: var(--background);
+}
+
+.space-backdrop::before,
+.space-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* deep-space glow */
+.space-backdrop::before {
+  background:
+    radial-gradient(120% 80% at 82% -10%, rgba(88, 70, 190, 0.32), transparent 60%),
+    radial-gradient(90% 70% at 8% 108%, rgba(26, 86, 219, 0.28), transparent 62%),
+    radial-gradient(70% 60% at 50% 50%, rgba(14, 22, 58, 0.6), transparent 75%),
+    linear-gradient(180deg, #03050d 0%, #060a1c 55%, #03050d 100%);
+}
+
+/* a still layer of faint, far-away stars */
+.space-backdrop::after {
+  background-image:
+    radial-gradient(1px 1px at 11% 17%, rgba(255, 255, 255, 0.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 29% 71%, rgba(196, 214, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 47% 33%, rgba(255, 255, 255, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 63% 88%, rgba(255, 236, 205, 0.7) 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 9%, rgba(255, 255, 255, 0.7) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 91% 54%, rgba(180, 255, 221, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 5% 92%, rgba(255, 255, 255, 0.6) 50%, transparent 51%),
+    radial-gradient(1px 1px at 38% 5%, rgba(214, 200, 255, 0.7) 50%, transparent 51%);
+  background-size: 380px 380px;
+}
+
+[data-theme="space"] .space-backdrop::before { opacity: 1; }
+[data-theme="space"] .space-backdrop::after { opacity: 0.55; }
+
+/* ========= THEME SWITCH — circular reveal ========= */
+:root.theme-reveal::view-transition-old(root),
+:root.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+:root.theme-reveal::view-transition-new(root) {
+  animation: theme-reveal 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--reveal-x) var(--reveal-y)); }
+  to   { clip-path: circle(var(--reveal-r) at var(--reveal-x) var(--reveal-y)); }
+}
+
+/* ========= SPACING ========= */
+.section-padding { padding: 84px 0; }
+
+@media (min-width: 768px) {
+  .section-padding { padding: 120px 0; }
+}
+
+.page-content > section.section-padding:first-child,
+.page-content > div:first-child > section.section-padding {
+  padding-top: 48px;
+}
+
+/* ========= UTILS ========= */
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* ========= NAV FLIP LABEL ========= */
+.nav-label {
+  display: inline-grid;
+  grid-template: 1fr / 1fr;
+  place-items: center;
+  line-height: 1.5;
+}
+
+.nav-label-en,
+.nav-label-ja {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: opacity 0.22s ease, visibility 0.22s ease;
+  line-height: 1.5;
+}
+
+.nav-label-en {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-label-ja {
+  opacity: 0;
+  visibility: hidden;
+  letter-spacing: normal;
+}
+
+.nav-link:hover .nav-label-en {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.nav-link:hover .nav-label-ja {
+  opacity: 1;
+  visibility: visible;
+}

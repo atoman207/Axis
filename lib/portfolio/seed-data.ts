@@ -1,0 +1,210 @@
+import type { PortfolioGroupType } from "@/lib/portfolio/types";
+
+export type SeedCategory = {
+  id: string;
+  label: string;
+  stacks: string[];
+  group_type: PortfolioGroupType;
+  sort_order: number;
+  sites: string[];
+};
+
+export const seedPortfolioCategories: SeedCategory[] = [
+  {
+    id: "base",
+    label: "BASE",
+    stacks: ["BASE", "E-commerce"],
+    group_type: "skill",
+    sort_order: 0,
+    sites: ["https://shop.awaji-resort.com/"],
+  },
+  {
+    id: "ec-cube",
+    label: "EC CUBE",
+    stacks: ["EC-CUBE", "PHP", "E-commerce"],
+    group_type: "skill",
+    sort_order: 1,
+    sites: ["https://www.itojuku.co.jp/"],
+  },
+  {
+    id: "makeshop",
+    label: "MakeShop",
+    stacks: ["MakeShop", "E-commerce"],
+    group_type: "skill",
+    sort_order: 2,
+    sites: [
+      "https://morght.com/",
+      "https://www.adastria.co.jp/",
+      "https://teamyokomo.com/",
+    ],
+  },
+  {
+    id: "next",
+    label: "Next.js",
+    stacks: ["Next.js", "React", "TypeScript"],
+    group_type: "skill",
+    sort_order: -1,
+    sites: [
+      "https://wh-sanchoku.com/",
+      "https://thekitchenconnection.net/",
+      "https://retouch.salon/",
+      "https://aircon-cleannavi.com/",
+      "https://bajigakuin.net/",
+      "https://labnote.site/",
+      "https://luckybronzecoin.com/",
+      "https://saiseibouquet.jp/",
+    ],
+  },
+  {
+    id: "php",
+    label: "PHP",
+    stacks: ["PHP", "Custom Backend"],
+    group_type: "skill",
+    sort_order: 4,
+    sites: ["https://x-trans.jp/", "https://www.sapporobeer.jp/"],
+  },
+  {
+    id: "shopify",
+    label: "Shopify",
+    stacks: ["Shopify", "E-commerce", "Liquid"],
+    group_type: "skill",
+    sort_order: 5,
+    sites: [
+      "https://www.kracie.co.jp/",
+      "https://moon-castle.jp/",
+      "https://konnybaby.jp/",
+      "https://japangifts.jp/",
+    ],
+  },
+  {
+    id: "studio",
+    label: "STUDIO",
+    stacks: ["STUDIO", "No-code", "Landing Page"],
+    group_type: "skill",
+    sort_order: 6,
+    sites: [
+      "https://crayonshinchan-japancrafts.jp/",
+      "https://service.norm.co.jp/",
+      "https://agel-english.com/",
+      "https://x-ross.jp/",
+    ],
+  },
+  {
+    id: "threejs",
+    label: "Three.js",
+    stacks: ["Three.js", "WebGL", "Interactive"],
+    group_type: "skill",
+    sort_order: 7,
+    sites: [
+      "https://e-state.ne.jp/",
+      "https://speee.jp/",
+      "https://cnxt.jp/",
+      "https://www.yokasumai.net/",
+      "https://www.cloudot.co.jp/",
+    ],
+  },
+  {
+    id: "wix",
+    label: "Wix",
+    stacks: ["Wix", "No-code", "Corporate Site"],
+    group_type: "skill",
+    sort_order: 8,
+    sites: [
+      "https://www.welfing.info/",
+      "https://www.webmarketing.dxup.jp/",
+      "https://www.kaedehatashima.com/",
+      "https://www.anshinlife.biz/",
+      "https://www.glwa.jp/",
+      "https://www.dentease.jp/",
+    ],
+  },
+  {
+    id: "wordpress",
+    label: "WordPress",
+    stacks: ["WordPress", "PHP", "CMS"],
+    group_type: "skill",
+    sort_order: 9,
+    sites: [
+      "https://kaho-enterprise.co.jp/",
+      "https://www.every24.co.jp/",
+      "https://www.apexia.biz/",
+    ],
+  },
+  {
+    id: "ai-lp",
+    label: "AI + LP",
+    stacks: ["AI", "LP", "Marketing Site"],
+    group_type: "other",
+    sort_order: 10,
+    sites: [
+      "https://www.sme-support.co.jp/",
+      "https://just-c.net/",
+      "https://htm-consul.com/",
+      "https://www.glcl.co.jp/",
+      "https://www.leapath.jp/lp_company/",
+      "https://don-consultant.com/",
+      "https://keiei-navi.com/",
+      "https://www.tsuyomi.biz/",
+      "https://song-cs.com/",
+      "https://bizdesign-partners.com/",
+      "https://nkjm-smec.jp/",
+      "https://koholab.jp/",
+    ],
+  },
+  {
+    id: "woman",
+    label: "Woman",
+    stacks: ["Brand Site", "Lifestyle", "Responsive"],
+    group_type: "other",
+    sort_order: 11,
+    sites: [
+      "https://pato.today/guest/",
+      "https://aima-match.com/",
+      "https://thesalon.tokyo/",
+      "https://jemiremi.com/",
+    ],
+  },
+  {
+    id: "cloth",
+    label: "Cloth",
+    stacks: ["Fashion", "E-commerce", "UI/UX"],
+    group_type: "other",
+    sort_order: 12,
+    sites: [
+      "https://www.muji.com/jp/ja/store",
+      "https://hanaya-fashion.co.jp/",
+      "https://www.umeya1951.jp/",
+    ],
+  },
+  {
+    id: "teeth",
+    label: "Teeth",
+    stacks: ["Healthcare", "LP", "WordPress/PHP"],
+    group_type: "other",
+    sort_order: 13,
+    sites: [
+      "https://www.masuda-shika.net/lp/",
+      "https://ikebukuro-mouthpiece.com/",
+    ],
+  },
+  {
+    id: "it-sites",
+    label: "IT Sites",
+    stacks: ["IT", "B2B", "LP"],
+    group_type: "other",
+    sort_order: 14,
+    sites: [
+      "https://writersbox.com/ja/",
+      "https://aiocr.ai/lp/",
+      "https://usen.com/portal/biz_music/lp_uplink/",
+    ],
+  },
+  {
+    id: "lp",
+    label: "LP",
+    stacks: ["Landing Page", "Campaign", "Marketing"],
+    group_type: "other",
+    sort_order: 15,
+    sites: ["https://jp.rohto.com/thelypo/"],
+  },
+];
