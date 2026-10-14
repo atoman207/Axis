@@ -4,6 +4,8 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
+import SiteButton from "@/components/SiteButton";
 
 type Review = {
   id: string;
@@ -104,13 +106,7 @@ export default function Reviews() {
 
       <div ref={ref} className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-12 text-center sm:mb-14">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="mb-4 text-xs uppercase tracking-[0.3em] text-accent"
-          >
-            Reviews
-          </motion.p>
+          <SectionEyebrow align="center">Reviews</SectionEyebrow>
           <motion.h2
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -153,22 +149,18 @@ export default function Reviews() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {hasMore && (
-              <button
+              <SiteButton
                 type="button"
                 onClick={() => setVisibleCount((count) => Math.min(count + PAGE_SIZE, reviews.length))}
-                className="rounded-xl bg-shu-700 px-7 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-shu-800"
+                className="px-7"
               >
                 See More
-              </button>
+              </SiteButton>
             )}
             {canCollapse && (
-              <button
-                type="button"
-                onClick={() => setVisibleCount(PAGE_SIZE)}
-                className="rounded-xl border border-line bg-surface px-7 py-3 text-sm font-semibold text-ink-soft transition hover:border-shu-200 hover:text-accent-strong"
-              >
+              <SiteButton type="button" onClick={() => setVisibleCount(PAGE_SIZE)} className="px-7">
                 See Less
-              </button>
+              </SiteButton>
             )}
           </div>
         </motion.div>

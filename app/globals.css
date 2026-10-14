@@ -205,9 +205,19 @@ html {
 /* ========= TYPOGRAPHY ========= */
 :root {
   --font-sans: "Noto Sans JP";
+  --font-serif: "Noto Serif JP";
+}
+
+@utility font-sans {
+  font-family: var(--font-sans), sans-serif;
+}
+
+@utility font-serif {
+  font-family: var(--font-serif), serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), serif;
   /* proportional kana: tighter, more even Japanese headlines */
   font-feature-settings: "palt";
   letter-spacing: 0.03em;
@@ -216,7 +226,7 @@ h1, h2, h3, h4, h5, h6 {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), -apple-system, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+  font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
 }
 
@@ -239,9 +249,7 @@ textarea:-webkit-autofill:focus {
 }
 
 #contact .contact-submit-btn:disabled {
-  background-color: var(--shu-700);
-  color: #ffffff;
-  opacity: 1;
+  opacity: 0.7;
 }
 
 /* Section h2 and PageHeader h1 titles — navy ink */
@@ -361,7 +369,7 @@ textarea:-webkit-autofill:focus {
   color: #fdf6ea;
   border-radius: 5px;
   box-shadow: inset 0 0 0 1px rgba(253, 246, 234, 0.25), 0 1px 3px rgba(0, 0, 0, 0.25);
-  font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-family: var(--font-serif), serif;
   font-weight: 700;
   font-size: 0.8rem;
   line-height: 1;

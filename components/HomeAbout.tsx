@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 
 type Props = {
   /** Figures counted from the published work list and service menu. */
@@ -52,13 +52,9 @@ export default function HomeAbout({ stats }: Props) {
             ))}
           </dl>
 
-          <Link
-            href="/about"
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
-          >
+          <SiteButton href="/about" className="mt-8">
             {about.link}
-            <span aria-hidden>→</span>
-          </Link>
+          </SiteButton>
         </Reveal>
       </div>
     </section>

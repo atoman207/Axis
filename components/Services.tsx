@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, type CSSProperties } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
 import ServiceModal, { type ServiceDetail } from "./ServiceModal";
 
 function devicon(path: string) {
@@ -165,7 +166,7 @@ export default function Services() {
 
       <div ref={ref} className="max-w-7xl mx-auto px-6">
         <div className="mb-16 text-center">
-          <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="text-xs tracking-[0.3em] text-accent mb-4 uppercase">Service</motion.p>
+          <SectionEyebrow align="center">Service</SectionEyebrow>
           <motion.h2 initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl md:text-5xl font-bold text-sumi mb-3">
             What We Do
           </motion.h2>

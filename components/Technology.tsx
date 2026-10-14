@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, type CSSProperties } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 function devicon(path: string) {
   return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${path}`;
@@ -80,7 +81,7 @@ export default function Technology() {
       <div className="relative max-w-7xl mx-auto px-6">
         {/* Header */}
         <div ref={ref} className="mb-16 text-center">
-          <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="text-xs tracking-[0.3em] text-accent mb-4 uppercase">Technology</motion.p>
+          <SectionEyebrow align="center">Technology</SectionEyebrow>
           <motion.h2 initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl md:text-5xl font-bold text-sumi mb-4">
             {t.technology.title}
           </motion.h2>
@@ -120,7 +121,7 @@ export default function Technology() {
 
         {/* Development Flow */}
         <div ref={flowRef}>
-          <motion.p initial={{ opacity: 0 }} animate={flowIn ? { opacity: 1 } : {}} className="text-xs tracking-[0.3em] text-accent mb-4 uppercase text-center">Development Flow</motion.p>
+          <SectionEyebrow align="center">Development Flow</SectionEyebrow>
           <motion.h3 initial={{ opacity: 0, y: 18 }} animate={flowIn ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }} className="text-2xl md:text-3xl font-bold text-sumi text-center mb-12">
             {t.technology.flowTitle}
           </motion.h3>

@@ -3,8 +3,9 @@
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
+import SiteButton from "@/components/SiteButton";
 
 function devicon(path: string) {
   return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${path}`;
@@ -332,13 +333,7 @@ export default function Career() {
     <section id="career" className="section-padding relative scroll-mt-20 overflow-hidden">
       <div ref={ref} className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 text-center md:mb-14">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="mb-4 text-xs uppercase tracking-[0.3em] text-accent"
-          >
-            Career
-          </motion.p>
+          <SectionEyebrow align="center">Career</SectionEyebrow>
           <motion.h2
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -420,13 +415,9 @@ export default function Career() {
           transition={{ delay: 0.6 }}
           className="text-center"
         >
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-shu-700 px-8 py-4 text-sm font-semibold text-white shadow-md transition-colors hover:bg-shu-800"
-          >
+          <SiteButton href="/contact" className="px-8 py-4">
             {t.career.apply}
-            <span aria-hidden>→</span>
-          </Link>
+          </SiteButton>
         </motion.div>
       </div>
 
@@ -470,17 +461,16 @@ export default function Career() {
                 <CareerCardFace pos={selected} expanded />
               </motion.div>
 
-              <motion.button
-                type="button"
-                onClick={closeModal}
+              <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ delay: 0.12 }}
-                className="rounded-full border border-white/20 bg-white/10 px-8 py-3 text-sm font-semibold tracking-wide text-white backdrop-blur-md transition hover:bg-white/20"
               >
-                Close
-              </motion.button>
+                <SiteButton type="button" onClick={closeModal} tone="onDark" className="px-8" hideArrow>
+                  Close
+                </SiteButton>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

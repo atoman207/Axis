@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 import { services } from "@/components/Services";
 
 /** The service menu in brief; the full cards live on /service. */
@@ -18,13 +19,7 @@ export default function HomeServices() {
         <div className="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading eyebrow="Service" title={copy.title} lead={copy.lead} />
           <Reveal delay={0.1}>
-            <Link
-              href="/service"
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-6 py-3 text-sm font-semibold text-sumi transition-colors hover:border-accent hover:text-accent"
-            >
-              {copy.link}
-              <span aria-hidden>→</span>
-            </Link>
+            <SiteButton href="/service">{copy.link}</SiteButton>
           </Reveal>
         </div>
 

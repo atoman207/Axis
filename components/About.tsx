@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 import { COMPANY } from "@/lib/company";
 
 export default function About() {
@@ -145,13 +146,7 @@ export default function About() {
               ))}
             </div>
             <div className="mt-8">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-xl bg-shu-600 px-6 py-3 text-sm font-semibold text-white hover:bg-shu-700 transition-colors"
-              >
-                {values.cta}
-                <span aria-hidden>→</span>
-              </Link>
+              <SiteButton href="/contact">{values.cta}</SiteButton>
             </div>
           </motion.div>
         </div>

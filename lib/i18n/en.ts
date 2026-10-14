@@ -101,19 +101,22 @@ const en: Dictionary = {
 
   hero: {
     title: ["Turning ideas into", "services people use."],
-    lead: "AXIS is a full-stack AI engineering team that takes AI, SaaS, and web systems from planning and design through development and operations.",
+    lead: [
+      "We turn your vision of “the service I want to build” into reality with solid engineering.",
+      "With that as our starting point, AXIS provides end-to-end support for AI, SaaS, and web systems — from planning and design through development and operations.",
+    ],
     ctaContact: "Contact us",
-    ctaWorks: "See our work",
+    ctaWorks: "View Development History",
     tags: ["Generative AI & RAG", "SaaS / MVP", "Business systems", "E-commerce & payments", "Cloud"],
   },
 
   home: {
     about: {
       title: "About Us",
-      heading: ["A technical partner", "that stays after launch."],
+      heading: ["Beyond development,", "as a trusted technical partner."],
       body: [
-        "What matters to us is not simply “building a system,” but shaping ideas and problems that do not yet have a form, and turning them into services people actually use.",
-        "Requirements, UI/UX, database design, AI adoption, payments, infrastructure, and operations after launch — we put the necessary technology in place one piece at a time, as a single team.",
+        "AXIS partners with your ideas and challenges to build AI and web systems that support your business.",
+        "From planning and requirements through design, development, and post-launch operations and maintenance, we stay with you end to end — supporting long-term growth with solid engineering and careful communication.",
       ],
       link: "Company profile",
     },
@@ -334,12 +337,24 @@ const en: Dictionary = {
   company: {
     title: "Company Profile",
     rows: [
-      { label: "Company", value: `${COMPANY.name} (${COMPANY.brand})` },
+      { label: "Company", value: COMPANY.name },
+      { label: "English name", value: COMPANY.nameEn },
       { label: "Representative Director", value: COMPANY.representative },
-      { label: "Address", value: COMPANY.addressEn },
-      { label: "Business", value: "Planning, design, development, and operation of AI, SaaS, and web systems; cloud infrastructure; DX support" },
-      { label: "Development team", value: "1 engineer, 1 designer" },
-      { label: "Lancers", value: COMPANY.lancersLabel, href: COMPANY.lancersUrl },
+      { label: "Head office", value: COMPANY.addressEn },
+      {
+        label: "Business",
+        value:
+          "Generative AI & RAG systems; SaaS & web application development; business systems; e-commerce & payment systems; cloud infrastructure build & operations; DX adoption support",
+      },
+      {
+        label: "Development setup",
+        value: "1 full-stack AI engineer (contractor) and 1 designer",
+      },
+      {
+        label: "Coverage",
+        value:
+          "Planning, requirements, UI/UX design, system development, testing, deployment, and operations & maintenance",
+      },
     ],
   },
 

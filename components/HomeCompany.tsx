@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import CompanyTable from "@/components/CompanyTable";
 import MapEmbed from "@/components/MapEmbed";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 
 /** Company facts beside the map, as on the foot of most small-company home pages. */
 export default function HomeCompany() {
@@ -20,13 +20,9 @@ export default function HomeCompany() {
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
           <Reveal>
             <CompanyTable />
-            <Link
-              href="/about"
-              className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
-            >
+            <SiteButton href="/about" className="mt-8">
               {copy.link}
-              <span aria-hidden>→</span>
-            </Link>
+            </SiteButton>
           </Reveal>
 
           <Reveal delay={0.1}>

@@ -2,8 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import Image from "next/image";
 import { useI18n } from "@/components/PreferencesProvider";
+import SiteButton from "@/components/SiteButton";
+
+const HERO_BADGES = [
+  "/sites/badge/badge1.png",
+  "/sites/badge/badge2.png",
+  "/sites/badge/badge3.png",
+  "/sites/badge/badge4.png",
+  "/sites/badge/badge5.png",
+] as const;
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,31 +62,33 @@ export default function Hero() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mb-6 flex items-center gap-3 text-[11px] font-medium tracking-[0.3em] text-sky-300 uppercase sm:text-xs"
+          className="mb-7 flex items-center gap-3 text-[10px] font-semibold tracking-[0.38em] text-sky-400 uppercase sm:text-[11px]"
         >
-          <span aria-hidden className="h-px w-8 bg-sky-300" />
-          Full-Stack AI Engineering Team
+          <span aria-hidden className="h-px w-10 bg-sky-400/90" />
+          FULL-STACK AI ENGINEERING
         </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[2.1rem] font-bold leading-[1.3] text-white sm:text-5xl sm:leading-[1.25] lg:text-6xl lg:leading-[1.25]"
+          className="font-serif text-[2.35rem] font-semibold leading-[1.35] tracking-[0.04em] text-white [text-shadow:0_2px_24px_rgba(6,13,31,0.45)] sm:text-5xl sm:leading-[1.3] lg:text-[3.65rem] lg:leading-[1.28]"
         >
           {t.hero.title.map((line) => (
             <span key={line} className="block">{line}</span>
           ))}
         </motion.h1>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-7 max-w-xl text-sm leading-loose text-white/85 md:text-base"
+          className="mt-8 max-w-xl space-y-3.5 text-[0.9375rem] font-light leading-[1.95] tracking-[0.02em] text-sky-50/75 md:text-[1.05rem] md:leading-[2]"
         >
-          {t.hero.lead}
-        </motion.p>
+          {t.hero.lead.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -85,33 +96,29 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-9 flex flex-wrap items-center gap-3"
         >
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-shu-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-colors hover:bg-shu-500"
-          >
+          <SiteButton href="/contact" tone="onDark" className="px-8 py-3.5">
             {t.hero.ctaContact}
-            <span aria-hidden>→</span>
-          </Link>
-          <Link
-            href="/works"
-            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/15"
-          >
+          </SiteButton>
+          <SiteButton href="/works" tone="onDark" className="px-8 py-3.5">
             {t.hero.ctaWorks}
-          </Link>
+          </SiteButton>
         </motion.div>
 
         <motion.ul
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.65 }}
-          className="mt-10 flex max-w-2xl flex-wrap gap-2"
+          className="mt-10 flex max-w-3xl flex-wrap items-center gap-3 sm:gap-4"
         >
-          {t.hero.tags.map((tag) => (
-            <li
-              key={tag}
-              className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] tracking-wide text-white/80 backdrop-blur-sm sm:text-xs"
-            >
-              {tag}
+          {HERO_BADGES.map((src, index) => (
+            <li key={src} className="shrink-0">
+              <Image
+                src={src}
+                alt={t.hero.tags[index] ?? ""}
+                width={112}
+                height={112}
+                className="h-16 w-16 object-contain drop-shadow-lg sm:h-20 sm:w-20 md:h-[5.5rem] md:w-[5.5rem]"
+              />
             </li>
           ))}
         </motion.ul>

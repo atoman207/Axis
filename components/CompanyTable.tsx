@@ -8,7 +8,7 @@ export default function CompanyTable() {
   const rows = t.company.rows;
 
   return (
-    <dl className="overflow-hidden rounded-2xl border border-line bg-surface">
+    <dl className="overflow-hidden rounded-2xl bg-surface">
       {rows.map((row, i) => (
         <div
           key={row.label}
@@ -16,7 +16,7 @@ export default function CompanyTable() {
             i < rows.length - 1 ? "border-b border-line-soft" : ""
           }`}
         >
-          <dt className="w-28 flex-shrink-0 text-sm font-semibold text-sumi">{row.label}</dt>
+          <dt className="w-32 flex-shrink-0 text-sm font-semibold text-sumi sm:w-36">{row.label}</dt>
           <dd className="text-sm leading-relaxed text-ink-soft">
             {row.href ? (
               <a

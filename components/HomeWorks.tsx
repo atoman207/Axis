@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 import SitePreviewImage from "@/components/SitePreviewImage";
 import type { PortfolioSite } from "@/lib/portfolio/types";
 
@@ -49,13 +49,9 @@ export default function HomeWorks({ works, total }: Props) {
         </div>
 
         <Reveal className="mt-12 text-center">
-          <Link
-            href="/works"
-            className="inline-flex items-center gap-2 rounded-full bg-ai-950 px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-ai-800 space:bg-shu-600 space:hover:bg-shu-500"
-          >
+          <SiteButton href="/works" className="px-8 py-4">
             {copy.link(total)}
-            <span aria-hidden>→</span>
-          </Link>
+          </SiteButton>
         </Reveal>
       </div>
     </section>

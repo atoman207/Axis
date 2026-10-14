@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useI18n } from "@/components/PreferencesProvider";
+import SiteButton from "@/components/SiteButton";
 
 const ModalScene = dynamic(() => import("./ModalScene"), { ssr: false });
 
@@ -141,15 +142,10 @@ export default function ServiceModal({ service, onClose }: Props) {
               </div>
 
               {/* CTA */}
-              <div className="mt-8 pt-6 border-t border-line-soft">
-                <a
-                  href="/contact"
-                  onClick={onClose}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium text-white bg-shu-600 hover:bg-shu-700 transition-colors shadow-sm"
-                >
+              <div className="mt-8 border-t border-line-soft pt-6">
+                <SiteButton href="/contact" onClick={onClose}>
                   {labels.cta}
-                  <span className="transition-transform group-hover:translate-x-0.5">→</span>
-                </a>
+                </SiteButton>
               </div>
             </div>
           </motion.div>

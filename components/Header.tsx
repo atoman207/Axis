@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import PreferenceControls from "@/components/PreferenceControls";
 import { useI18n } from "@/components/PreferencesProvider";
+import SiteButton from "@/components/SiteButton";
 import SiteLogo from "@/components/SiteLogo";
 import { NAV_ITEMS } from "@/lib/navigation";
 
@@ -63,12 +64,9 @@ export default function Header() {
           <div className="ml-auto flex items-center gap-2 xl:ml-7">
             <PreferenceControls className="hidden min-[520px]:flex" />
 
-            <Link
-              href="/contact"
-              className="hidden rounded-full bg-shu-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-shu-700 md:inline-flex"
-            >
+            <SiteButton href="/contact" className="hidden px-5 py-2.5 md:inline-flex">
               {t.header.contact}
-            </Link>
+            </SiteButton>
 
             <button
               className="flex flex-col gap-1.5 p-2 xl:hidden"
@@ -112,13 +110,9 @@ export default function Header() {
               </motion.div>
             ))}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpenOn(null)}
-                className="mt-2 inline-block rounded-full bg-shu-600 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-shu-700"
-              >
+              <SiteButton href="/contact" className="mt-2 px-8" onClick={() => setMenuOpenOn(null)}>
                 {t.header.contact}
-              </Link>
+              </SiteButton>
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}

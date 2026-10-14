@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
+import SiteButton from "@/components/SiteButton";
 import { COMPANY } from "@/lib/company";
 
 type FormData = {
@@ -75,10 +77,7 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="lg:col-span-2"
         >
-          <p className="mb-4 flex items-center gap-3 text-xs font-medium tracking-[0.3em] text-accent uppercase">
-            <span aria-hidden className="h-px w-8 bg-accent" />
-            Contact
-          </p>
+          <SectionEyebrow>Contact</SectionEyebrow>
           <h2 className="text-2xl font-bold leading-snug sm:text-3xl">{c.info.title}</h2>
           <p className="mt-4 text-sm leading-loose text-muted">{c.lead}</p>
 
@@ -202,17 +201,24 @@ export default function Contact() {
                 </div>
               )}
 
-              <button
+              <SiteButton
                 type="submit"
                 disabled={isSubmitting}
-                className="contact-submit-btn w-full rounded-xl bg-shu-700 py-3.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-shu-800 disabled:cursor-wait sm:py-4"
+                hideArrow={isSubmitting}
+                className="contact-submit-btn w-full py-3.5 sm:py-4"
               >
-                <span className="flex items-center justify-center gap-2">
-                  {isSubmitting ? (
-                    <><svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>{c.sending}</>
-                  ) : c.submit}
-                </span>
-              </button>
+                {isSubmitting ? (
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    {c.sending}
+                  </span>
+                ) : (
+                  c.submit
+                )}
+              </SiteButton>
 
               <p className="text-center text-xs text-muted">
                 {c.privacyLead}

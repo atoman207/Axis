@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
+import SiteButton from "@/components/SiteButton";
 
 export default function PrivacyPolicy() {
   const { t } = useI18n();
@@ -26,13 +26,7 @@ export default function PrivacyPolicy() {
         </div>
 
         <div className="mt-14 border-t border-line pt-8">
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
-          >
-            {policy.contactLink}
-            <span aria-hidden>→</span>
-          </Link>
+          <SiteButton href="/contact">{policy.contactLink}</SiteButton>
         </div>
       </div>
     </section>

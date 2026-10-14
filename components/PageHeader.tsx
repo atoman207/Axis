@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
 import type { PageKey } from "@/lib/i18n/dictionaries";
 
 // English eyebrow shown above the localized title, in both languages.
@@ -46,15 +47,7 @@ export default function PageHeader({ page }: Props) {
           <span className="text-accent">{en.toUpperCase()}</span>
         </motion.nav>
 
-        {/* Eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.06 }}
-          className="text-[11px] tracking-[0.3em] text-accent mb-4 uppercase font-medium"
-        >
-          {en}
-        </motion.p>
+        <SectionEyebrow delay={0.06}>{en}</SectionEyebrow>
 
         {/* Page title */}
         <motion.h1

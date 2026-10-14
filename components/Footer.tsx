@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useI18n } from "@/components/PreferencesProvider";
+import SiteButton from "@/components/SiteButton";
 import SiteLogo from "@/components/SiteLogo";
 import { COMPANY, GOOGLE_MAP_URL } from "@/lib/company";
 import { NAV_ITEMS } from "@/lib/navigation";
@@ -114,24 +115,27 @@ export default function Footer() {
           <div className="md:col-span-4">
             <p className="mb-4 text-xs tracking-widest text-white/50 uppercase">{t.footer.contact}</p>
 
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-shu-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-shu-500"
-            >
+            <SiteButton href="/contact" tone="onDark" className="px-6 py-2.5">
               {t.footer.contactButton}
-              <span aria-hidden>→</span>
-            </Link>
+            </SiteButton>
 
             <a
               href={COMPANY.lancersUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-5 flex w-fit flex-col gap-1"
+              aria-label={t.footer.lancers}
+              title={t.footer.lancers}
+              className="group mt-5 flex w-fit items-center gap-3"
             >
-              <span className="text-xs text-white/50">{t.footer.lancers}</span>
-              <span className="inline-flex items-center gap-1.5 text-sm text-white/85 underline decoration-white/30 underline-offset-4 transition-colors group-hover:text-white group-hover:decoration-white">
-                {COMPANY.lancersLabel}
-                <ExternalIcon />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={COMPANY.logo}
+                alt={t.footer.lancers}
+                className="h-12 w-12 rounded-full object-cover ring-1 ring-white/20 transition group-hover:ring-white/50 group-hover:scale-105"
+                draggable={false}
+              />
+              <span className="text-sm text-white/85 transition-colors group-hover:text-white">
+                {t.footer.lancers}
               </span>
             </a>
 

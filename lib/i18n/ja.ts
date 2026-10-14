@@ -100,19 +100,22 @@ const ja = {
 
   hero: {
     title: ["アイデアを、", "使われるサービスへ。"],
-    lead: "株式会社アクシスは、AI・SaaS・Webシステムの企画・設計・開発・運用までを一貫して手がける、フルスタックAIエンジニアチームです。",
+    lead: [
+      "お客様の「こんなサービスをつくりたい」を、確かな技術でカタチにする。",
+      "その想いを原点に、株式会社アクシスは、AI・SaaS・Webシステムの企画・設計から開発・運用まで、一貫してサポートします。",
+    ],
     ctaContact: "お問い合わせ",
-    ctaWorks: "実績を見る",
+    ctaWorks: "開発実績を見る",
     tags: ["生成AI・RAG", "SaaS / MVP開発", "業務システム", "EC・決済", "クラウド構築"],
   },
 
   home: {
     about: {
       title: "私たちについて",
-      heading: ["作って終わりにしない、", "技術パートナーとして。"],
+      heading: ["開発のその先まで、", "信頼できる技術パートナーとして。"],
       body: [
-        "私たちが大切にしているのは、単に「システムを作ること」ではなく、まだ形になっていないアイデアや課題を整理し、実際に使われるサービスとして実現することです。",
-        "要件整理、UI/UX設計、データベース設計、AI導入、決済、インフラ、公開後の運用まで。必要な技術を一つずつ整理しながら、ワンチームで形にしていきます。",
+        "株式会社アクシスは、お客様のアイデアや課題に寄り添い、ビジネスに役立つAI・Webシステムを開発しています。",
+        "企画・要件定義から設計、開発、公開後の運用・保守まで、一貫して対応。確かな技術と丁寧なコミュニケーションを大切にし、お客様の事業成長を長期的に支援します。",
       ],
       link: "会社概要を見る",
     },
@@ -326,11 +329,19 @@ const ja = {
     title: "会社概要",
     rows: [
       { label: "会社名", value: COMPANY.name },
+      { label: "英文社名", value: COMPANY.nameEn },
       { label: "代表取締役", value: COMPANY.representative },
-      { label: "所在地", value: COMPANY.address },
-      { label: "事業内容", value: "AI・SaaS・Webシステムの企画・設計・開発・運用／クラウド構築／DX支援" },
-      { label: "開発メンバー", value: "エンジニア1名・デザイナー1名" },
-      { label: "Lancers", value: COMPANY.lancersLabel, href: COMPANY.lancersUrl },
+      { label: "本店所在地", value: COMPANY.address },
+      {
+        label: "事業内容",
+        value:
+          "生成AI・RAGシステム開発、SaaS・Webアプリケーション開発、業務システム開発、EC・決済システム構築、クラウドインフラ構築・運用、DX導入支援",
+      },
+      { label: "開発体制", value: "フルスタックAIエンジニア1名（業務委託）・デザイナー1名" },
+      {
+        label: "対応範囲",
+        value: "企画・要件定義・UI/UX設計・システム開発・テスト・導入・運用保守",
+      },
     ] as { label: string; value: string; href?: string }[],
   },
 

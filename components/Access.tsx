@@ -4,6 +4,7 @@ import MapEmbed from "@/components/MapEmbed";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
+import SiteButton from "@/components/SiteButton";
 import { COMPANY, GOOGLE_MAP_URL } from "@/lib/company";
 
 /** Office address, nearest stations and the Google Map. */
@@ -41,15 +42,9 @@ export default function Access({ band = false }: { band?: boolean }) {
               </div>
             </dl>
 
-            <a
-              href={GOOGLE_MAP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-5 py-2.5 text-sm font-semibold text-sumi transition-colors hover:border-accent hover:text-accent"
-            >
+            <SiteButton href={GOOGLE_MAP_URL} external className="mt-8 px-5 py-2.5">
               {t.access.openMap}
-              <span aria-hidden>↗</span>
-            </a>
+            </SiteButton>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:col-span-3">

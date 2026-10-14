@@ -3,6 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, type CSSProperties } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
+import SectionEyebrow from "@/components/SectionEyebrow";
 
 function lucide(name: string) {
   return `https://cdn.jsdelivr.net/npm/lucide-static@0.469.0/icons/${name}.svg`;
@@ -31,7 +32,7 @@ export default function Mission() {
       <div ref={ref} className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Mission */}
         <div className="mb-14 text-center sm:mb-18 md:mb-24">
-          <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="text-xs tracking-[0.3em] text-accent mb-4 uppercase">Mission</motion.p>
+          <SectionEyebrow align="center">Mission</SectionEyebrow>
           <motion.h2
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -58,7 +59,7 @@ export default function Mission() {
           className="relative mb-14 overflow-hidden rounded-3xl border border-shu-100 bg-surface p-6 text-center shadow-sm sm:mb-18 sm:p-8 md:mb-24 md:p-16"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-shu-50/60 to-gold-50/30" />
-          <p className="relative text-xs tracking-[0.3em] text-accent-alt mb-4 uppercase">Vision</p>
+          <SectionEyebrow align="center" className="relative">Vision</SectionEyebrow>
           <p className="relative text-xl font-bold leading-relaxed text-sumi sm:text-2xl md:text-4xl">
             {t.mission.visionLead}<br />
             <span className="gradient-text">{t.mission.visionAccent}</span>
@@ -68,7 +69,7 @@ export default function Mission() {
 
         {/* Values */}
         <div>
-          <motion.p initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} className="text-xs tracking-[0.3em] text-accent mb-4 uppercase text-center">Value</motion.p>
+          <SectionEyebrow align="center" delay={0.25}>Value</SectionEyebrow>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {values.map((v, i) => (
               <motion.div
