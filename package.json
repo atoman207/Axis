@@ -11,7 +11,7 @@
     "seed:portfolio": "node scripts/seed-portfolio.mjs"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "allowScripts": {
     "sharp": true,
