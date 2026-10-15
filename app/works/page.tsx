@@ -13,7 +13,7 @@ export default async function WorksPage() {
 
   return (
     <>
-      <PageHeader page="works" />
+      <PageHeader page="works" backgroundImage="/sites/bg/work_bg.png" />
       <Works portfolio={portfolio} />
       <ContactCta />
     </>

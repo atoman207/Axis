@@ -252,10 +252,14 @@ textarea:-webkit-autofill:focus {
   opacity: 0.7;
 }
 
-/* Section h2 and PageHeader h1 titles — navy ink */
+/* Section h2 and PageHeader h1 titles — navy ink (skip photo heroes) */
 .section-padding h2,
-.page-header h1 {
+.page-header:not(.page-header--media) h1 {
   color: var(--sumi);
+}
+
+.page-header--media h1 {
+  color: #ffffff;
 }
 
 /* ========= SCROLLBAR ========= */

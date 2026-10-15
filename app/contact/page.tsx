@@ -8,7 +8,7 @@ export const generateMetadata = () => getPageMetadata("contact");
 export default function ContactPage() {
   return (
     <>
-      <PageHeader page="contact" />
+      <PageHeader page="contact" backgroundImage="/sites/bg/contact_bg.png" />
       <div className="page-content">
         <Contact />
       </div>

@@ -8,7 +8,7 @@ export const generateMetadata = () => getPageMetadata("technology");
 export default function TechnologyPage() {
   return (
     <>
-      <PageHeader page="technology" />
+      <PageHeader page="technology" backgroundImage="/sites/bg/technology_bg.png" />
       <div className="page-content">
         <Technology />
       </div>

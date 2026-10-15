@@ -164,10 +164,16 @@ const en: Dictionary = {
       link: "More about the company",
     },
     cta: {
-      title: "Let's start with a conversation.",
-      body: "An idea-stage conversation is welcome. Even if you are not sure where to begin, we will work through the requirements with you.",
-      contact: "Go to the contact form",
-      lancers: "Reach us on Lancers",
+      title: "Tell us about that idea first.",
+      body: [
+        "We welcome consultations on AI adoption, SaaS, and web system development.",
+        "Even at the concept stage, we stay close to your challenges and figure out the best path forward together.",
+      ],
+      contact: "Talk about development",
+      works: "View our work",
+      lancersLabel: "External profile: ",
+      lancers: "Lancers",
+      note: "Confidential consultations available",
     },
   },
 
@@ -348,7 +354,7 @@ const en: Dictionary = {
       },
       {
         label: "Development setup",
-        value: "1 full-stack AI engineer (contractor) and 1 designer",
+        value: "Flexible development tailored to each client's challenges, with long-term technical support",
       },
       {
         label: "Coverage",

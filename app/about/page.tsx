@@ -12,7 +12,7 @@ export const generateMetadata = () => getPageMetadata("about");
 export default function AboutPage() {
   return (
     <>
-      <PageHeader page="about" />
+      <PageHeader page="about" backgroundImage="/sites/bg/company_bg.png" />
       <div className="page-content">
         <About />
       </div>

@@ -8,7 +8,7 @@ export const generateMetadata = () => getPageMetadata("service");
 export default function ServicePage() {
   return (
     <>
-      <PageHeader page="service" />
+      <PageHeader page="service" backgroundImage="/sites/bg/service_bg.png" />
       <div className="page-content">
         <Services />
       </div>
