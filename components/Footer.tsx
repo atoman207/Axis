@@ -10,7 +10,7 @@ import { NAV_ITEMS } from "@/lib/navigation";
 const contactChannels = [
   {
     name: "Email",
-    href: "mailto:contact@labnote.site",
+    href: null,
     icon: "/icons/mail.svg",
     chip: "bg-white",
     iconClass: "h-5 w-5 object-contain",
@@ -140,26 +140,48 @@ export default function Footer() {
             </a>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              {contactChannels.map((channel) => (
-                <a
-                  key={channel.name}
-                  href={channel.href}
-                  aria-label={channel.name}
-                  title={channel.name}
-                  {...(channel.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  className={`flex h-10 w-10 items-center justify-center rounded-lg shadow-sm transition hover:scale-105 ${channel.chip}`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+              {contactChannels.map((channel) => {
+                const chipClass = `flex h-10 w-10 items-center justify-center rounded-lg shadow-sm ${channel.chip}`;
+                const icon = (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={channel.icon}
                     alt={channel.name}
                     className={channel.iconClass}
                     draggable={false}
                   />
-                </a>
-              ))}
+                );
+
+                // Email is display-only for now (no mailto)
+                if (!channel.href) {
+                  return (
+                    <span
+                      key={channel.name}
+                      role="img"
+                      aria-label={channel.name}
+                      title={channel.name}
+                      className={`${chipClass} cursor-default`}
+                    >
+                      {icon}
+                    </span>
+                  );
+                }
+
+                return (
+                  <a
+                    key={channel.name}
+                    href={channel.href}
+                    aria-label={channel.name}
+                    title={channel.name}
+                    {...(channel.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className={`${chipClass} transition hover:scale-105`}
+                  >
+                    {icon}
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>

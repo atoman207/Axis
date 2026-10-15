@@ -138,6 +138,19 @@ const en: Dictionary = {
       lead: "A selection of the websites and web services we have delivered.",
       link: (count: number) => `View all work (${count})`,
     },
+    projects: {
+      title: "Projects",
+      lead: "Demo footage of services and systems we have built.",
+      names: {
+        aiVideo: "Medical generative AI & video demo system",
+        luckyCoins: "Lucky Coins — member points & rewards web service",
+        package7: "Clinic SaaS / MVP management dashboard",
+        package8: "Education management system",
+        package9: "Mobile e-commerce & payment platform",
+        package10: "Cloud infrastructure build, monitoring & operations",
+        package11: "Smart-city DX adoption portal",
+      },
+    },
     strengths: {
       title: "Why Clients Choose Us",
       items: [

@@ -37,6 +37,8 @@ type ServiceStyle = {
   title: string;
   stacks: StackIcon[];
   iconSrc: string;
+  /** Card background — numbered assets are mapped in reverse (01 → 6, …, 06 → 1). */
+  bgSrc: string;
   accent: string;
   border: string;
   threeColor: string;
@@ -48,6 +50,7 @@ export const services: ServiceStyle[] = [
   {
     id: "ai",
     title: "AI Development",
+    bgSrc: "/sites/bg/service-card-6.png",
     stacks: [
       { name: "OpenAI", isOpenAI: true },
       { name: "Claude", src: simpleIcon("anthropic", "D4A27F") },
@@ -65,6 +68,7 @@ export const services: ServiceStyle[] = [
   {
     id: "web",
     title: "Web Development",
+    bgSrc: "/sites/bg/service-card-5.png",
     stacks: [
       { name: "React", src: devicon("react/react-original.svg") },
       { name: "Next.js", src: simpleIcon("nextdotjs", "000000") },
@@ -82,6 +86,7 @@ export const services: ServiceStyle[] = [
   {
     id: "cloud",
     title: "Cloud",
+    bgSrc: "/sites/bg/service-card-4.png",
     stacks: [
       { name: "AWS", src: devicon("amazonwebservices/amazonwebservices-original-wordmark.svg"), wide: true },
       { name: "Azure", src: devicon("azure/azure-original.svg") },
@@ -99,6 +104,7 @@ export const services: ServiceStyle[] = [
   {
     id: "mobile",
     title: "Mobile",
+    bgSrc: "/sites/bg/service-card-3.png",
     stacks: [
       { name: "Flutter", src: devicon("flutter/flutter-original.svg") },
       { name: "React Native", src: devicon("react/react-original.svg") },
@@ -115,6 +121,7 @@ export const services: ServiceStyle[] = [
   {
     id: "design",
     title: "UI/UX Design",
+    bgSrc: "/sites/bg/service-card-2.png",
     stacks: [
       { name: "Figma", src: devicon("figma/figma-original.svg") },
       { name: "Storybook", src: simpleIcon("storybook", "FF4785") },
@@ -131,6 +138,7 @@ export const services: ServiceStyle[] = [
   {
     id: "consulting",
     title: "Consulting",
+    bgSrc: "/sites/bg/service-card-1.png",
     stacks: [
       { name: "GitHub", src: simpleIcon("github", "181717") },
       { name: "Notion", src: simpleIcon("notion", "000000") },
@@ -185,42 +193,50 @@ export default function Services() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.15 + i * 0.07 }}
                 onClick={() => setSelectedId(s.id)}
-                className={`bg-surface rounded-2xl p-7 border ${s.border} group hover:scale-[1.025] hover:shadow-lg transition-all duration-300 cursor-pointer`}
+                className={`group relative cursor-pointer overflow-hidden border ${s.border} bg-surface transition-all duration-300 hover:scale-[1.025] hover:shadow-lg`}
               >
-                <div className={`w-11 h-11 rounded-xl bg-sunken border ${s.border} flex items-center justify-center mb-5 ${s.accent} group-hover:scale-110 transition-transform duration-300`}>
-                  <span
-                    aria-hidden="true"
-                    className="icon-mask h-5 w-5 opacity-80"
-                    style={{ "--icon": `url(${s.iconSrc})` } as CSSProperties}
-                  />
-                </div>
-                <h3 className="text-sumi font-bold text-lg mb-1">{s.title}</h3>
-                {text.subtitle && <p className="text-faint text-[11px] mb-2 tracking-wide">{text.subtitle}</p>}
-                <p className="text-muted text-sm leading-relaxed mb-5">{text.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {s.stacks.map((stack) => (
-                    // brand marks are drawn for light backgrounds, so in space they sit on a pale chip
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${s.bgSrc})` }}
+                />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#060d1f]/92 via-[#060d1f]/72 to-[#060d1f]/35" />
+
+                <div className="relative z-10 flex h-full min-h-[280px] flex-col p-7">
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/25 bg-white/10 text-white backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
                     <span
-                      key={stack.name}
-                      title={stack.name}
-                      className={`flex h-9 w-9 items-center justify-center rounded-lg border ${s.tagBorder} ${s.tagBg} transition-transform hover:scale-110 space:border-transparent space:bg-white/90`}
-                    >
-                      {stack.isOpenAI ? (
-                        <OpenAIMark />
-                      ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={stack.src}
-                          alt={stack.name}
-                          className={stack.wide ? "h-4 w-7 object-contain" : "h-5 w-5 object-contain"}
-                          draggable={false}
-                        />
-                      )}
-                    </span>
-                  ))}
-                </div>
-                <div className={`text-xs ${s.accent} flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200`}>
-                  {t.services.more} <span>→</span>
+                      aria-hidden="true"
+                      className="icon-mask h-5 w-5 opacity-90"
+                      style={{ "--icon": `url(${s.iconSrc})`, backgroundColor: "#ffffff" } as CSSProperties}
+                    />
+                  </div>
+                  <h3 className="mb-1 text-lg font-bold text-white">{s.title}</h3>
+                  {text.subtitle && <p className="mb-2 text-[11px] tracking-wide text-sky-200/90">{text.subtitle}</p>}
+                  <p className="mb-5 text-sm leading-relaxed text-white/80">{text.description}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 mb-4">
+                    {s.stacks.map((stack) => (
+                      <span
+                        key={stack.name}
+                        title={stack.name}
+                        className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/20 bg-white/90 transition-transform hover:scale-110"
+                      >
+                        {stack.isOpenAI ? (
+                          <OpenAIMark />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={stack.src}
+                            alt={stack.name}
+                            className={stack.wide ? "h-4 w-7 object-contain" : "h-5 w-5 object-contain"}
+                            draggable={false}
+                          />
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-sky-200 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    {t.services.more} <span>→</span>
+                  </div>
                 </div>
               </motion.div>
             );

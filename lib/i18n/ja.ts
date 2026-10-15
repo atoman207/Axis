@@ -137,6 +137,19 @@ const ja = {
       lead: "これまでに手がけたWebサイト・Webサービスの一部をご紹介します。",
       link: (count: number) => `すべての実績を見る（${count}件）`,
     },
+    projects: {
+      title: "プロジェクト",
+      lead: "開発したサービス・システムのデモ映像です。",
+      names: {
+        aiVideo: "医療向け生成AI・動画生成デモシステム",
+        luckyCoins: "Lucky Coins — 会員ポイント・リワードWebサービス",
+        package7: "クリニック向け SaaS / MVP 管理ダッシュボード",
+        package8: "教育管理システム",
+        package9: "モバイルEC・決済連携プラットフォーム",
+        package10: "クラウド基盤の構築・監視・運用サービス",
+        package11: "スマートシティ DX導入支援ポータル",
+      },
+    },
     strengths: {
       title: "選ばれる理由",
       items: [

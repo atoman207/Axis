@@ -35,7 +35,7 @@ export default function Hero() {
     <section
       id="home"
       data-hero-section
-      className="relative isolate flex min-h-[640px] items-center overflow-hidden bg-[#060d1f] pt-16 sm:pt-18 lg:min-h-[88vh] lg:pt-20"
+      className="relative isolate flex h-[100vh] min-h-[640px] items-end overflow-hidden bg-[#060d1f] pt-20 pb-14 sm:pb-16 md:pb-20 lg:pb-24"
     >
       <video
         ref={videoRef}
@@ -55,9 +55,9 @@ export default function Hero() {
 
       {/* navy scrim: keeps the copy readable over the footage in either theme */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-[#060d1f]/95 via-[#060d1f]/75 to-[#060d1f]/25" />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-[#060d1f]/60 to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-[#060d1f]/70 to-transparent" />
 
-      <div className="mx-auto w-full max-w-7xl px-6 py-20 md:py-24">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}

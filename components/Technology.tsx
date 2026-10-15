@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, type CSSProperties } from "react";
+import { useMemo, useRef, type CSSProperties } from "react";
 import { useI18n } from "@/components/PreferencesProvider";
 import SectionEyebrow from "@/components/SectionEyebrow";
 
@@ -37,24 +37,70 @@ const techStack: TechItem[] = [
   { name: "React", src: devicon("react/react-original.svg") },
   { name: "Next.js", src: simpleIcon("nextdotjs", "000000") },
   { name: "TypeScript", src: devicon("typescript/typescript-original.svg") },
+  { name: "JavaScript", src: devicon("javascript/javascript-original.svg") },
+  { name: "Vue.js", src: devicon("vuejs/vuejs-original.svg") },
   { name: "Python", src: devicon("python/python-original.svg") },
   { name: "FastAPI", src: devicon("fastapi/fastapi-original.svg") },
   { name: "Node.js", src: devicon("nodejs/nodejs-original.svg") },
   { name: "Laravel", src: devicon("laravel/laravel-original.svg") },
+  { name: "PHP", src: devicon("php/php-original.svg") },
   { name: "Java", src: devicon("java/java-original.svg") },
+  { name: "Go", src: devicon("go/go-original-wordmark.svg"), wide: true },
   { name: "AWS", src: devicon("amazonwebservices/amazonwebservices-original-wordmark.svg"), wide: true },
   { name: "Azure", src: devicon("azure/azure-original.svg") },
+  { name: "GCP", src: devicon("googlecloud/googlecloud-original.svg") },
   { name: "Docker", src: devicon("docker/docker-original.svg") },
+  { name: "Kubernetes", src: devicon("kubernetes/kubernetes-plain.svg") },
+  { name: "Terraform", src: devicon("terraform/terraform-original.svg") },
   { name: "PostgreSQL", src: devicon("postgresql/postgresql-original.svg") },
+  { name: "MySQL", src: devicon("mysql/mysql-original.svg") },
   { name: "MongoDB", src: devicon("mongodb/mongodb-original.svg") },
   { name: "Redis", src: devicon("redis/redis-original.svg") },
+  { name: "Elasticsearch", src: simpleIcon("elasticsearch", "005571") },
+  { name: "GraphQL", src: devicon("graphql/graphql-plain.svg") },
+  { name: "Prisma", src: simpleIcon("prisma", "2D3748") },
+  { name: "Supabase", src: simpleIcon("supabase", "3FCF8E") },
+  { name: "Tailwind", src: devicon("tailwindcss/tailwindcss-original.svg") },
+  { name: "Three.js", src: simpleIcon("threedotjs", "000000") },
+  { name: "Flutter", src: devicon("flutter/flutter-original.svg") },
+  { name: "Swift", src: devicon("swift/swift-original.svg") },
   { name: "OpenAI", isOpenAI: true },
   { name: "Claude", src: simpleIcon("anthropic", "D4A27F") },
   { name: "Gemini", src: simpleIcon("googlegemini", "8E75F0") },
+  { name: "LangChain", src: simpleIcon("langchain", "1C3C3C") },
   { name: "GitHub", src: simpleIcon("github", "181717") },
-  { name: "Terraform", src: devicon("terraform/terraform-original.svg") },
-  { name: "Kubernetes", src: devicon("kubernetes/kubernetes-plain.svg") },
+  { name: "Vercel", src: simpleIcon("vercel", "000000") },
+  { name: "Figma", src: devicon("figma/figma-original.svg") },
+  { name: "Nginx", src: devicon("nginx/nginx-original.svg") },
 ];
+
+type DriftSeed = {
+  left: number;
+  top: number;
+  duration: number;
+  delay: number;
+  dx: number[];
+  dy: number[];
+};
+
+/** Deterministic layout/motion so SSR and client stay in sync. */
+function driftSeed(index: number, total: number): DriftSeed {
+  const cols = 8;
+  const rows = Math.ceil(total / cols);
+  const col = index % cols;
+  const row = Math.floor(index / cols);
+  const jitterX = ((index * 17) % 11) - 5;
+  const jitterY = ((index * 29) % 9) - 4;
+
+  return {
+    left: Math.min(88, Math.max(2, (col / (cols - 1)) * 82 + 4 + jitterX)),
+    top: Math.min(78, Math.max(4, (row / Math.max(rows - 1, 1)) * 68 + 6 + jitterY)),
+    duration: 14 + (index % 8) * 1.7,
+    delay: (index % 9) * 0.55,
+    dx: [0, 18 + (index % 5) * 6, -(12 + (index % 4) * 5), 8, 0],
+    dy: [0, -(14 + (index % 6) * 5), 10 + (index % 3) * 6, -(6 + (index % 4) * 3), 0],
+  };
+}
 
 const devFlow = [
   { key: "requirement",  step: "01", title: "Requirement",  icon: lucide("clipboard-list") },
@@ -66,6 +112,84 @@ const devFlow = [
   { key: "maintenance",  step: "07", title: "Maintenance",  icon: lucide("wrench") },
 ] as const;
 
+function TechIcon({ tech }: { tech: TechItem }) {
+  return (
+    <span
+      title={tech.name}
+      aria-label={tech.name}
+      className="flex h-10 w-10 items-center justify-center drop-shadow-sm sm:h-11 sm:w-11"
+    >
+      {tech.isOpenAI ? (
+        <OpenAIMark size={36} />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={tech.src}
+          alt={tech.name}
+          className={
+            tech.wide
+              ? "h-7 w-12 object-contain sm:h-8 sm:w-14"
+              : "h-8 w-8 object-contain sm:h-9 sm:w-9"
+          }
+          draggable={false}
+        />
+      )}
+    </span>
+  );
+}
+
+function FloatingTechField({ items, active }: { items: TechItem[]; active: boolean }) {
+  const seeds = useMemo(
+    () => items.map((_, index) => driftSeed(index, items.length)),
+    [items]
+  );
+
+  return (
+    <div className="relative mb-24 h-[380px] overflow-hidden sm:h-[440px] md:h-[520px]">
+
+      {items.map((tech, index) => {
+        const seed = seeds[index];
+        return (
+          <motion.div
+            key={tech.name}
+            className="absolute will-change-transform"
+            style={{ left: `${seed.left}%`, top: `${seed.top}%` }}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={
+              active
+                ? {
+                    opacity: 1,
+                    scale: 1,
+                    x: seed.dx,
+                    y: seed.dy,
+                  }
+                : { opacity: 0, scale: 0.85 }
+            }
+            transition={{
+              opacity: { duration: 0.5, delay: index * 0.02 },
+              scale: { duration: 0.5, delay: index * 0.02 },
+              x: {
+                duration: seed.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: seed.delay,
+              },
+              y: {
+                duration: seed.duration * 1.08,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: seed.delay * 0.9,
+              },
+            }}
+          >
+            <TechIcon tech={tech} />
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function Technology() {
   const ref     = useRef(null);
   const inView  = useInView(ref, { once: true, margin: "-60px" });
@@ -75,86 +199,72 @@ export default function Technology() {
 
   return (
     <section id="technology" className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none grid-bg opacity-60" />
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-shu-100/40 rounded-full blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 grid-bg opacity-60" />
+      <div className="absolute top-0 right-0 h-[400px] w-[400px] rounded-full bg-shu-100/40 blur-[100px]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div ref={ref} className="mb-16 text-center">
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div ref={ref} className="mb-12 text-center md:mb-14">
           <SectionEyebrow align="center">Technology</SectionEyebrow>
-          <motion.h2 initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} className="text-3xl md:text-5xl font-bold text-sumi mb-4">
+          <motion.h2
+            initial={{ opacity: 0, y: 28 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-4 text-3xl font-bold text-sumi md:text-5xl"
+          >
             {t.technology.title}
           </motion.h2>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="text-muted text-sm">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2 }}
+            className="text-sm text-muted"
+          >
             {t.technology.lead}
           </motion.p>
         </div>
 
-        {/* Tech grid */}
-        <div className="grid grid-cols-5 sm:grid-cols-5 lg:grid-cols-10 gap-3 mb-24">
-          {techStack.map((tech, i) => (
-            <motion.div
-              key={tech.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.4, delay: 0.1 + i * 0.025 }}
-              className="bg-surface rounded-xl p-3 flex flex-col items-center gap-2 group hover:scale-110 transition-all duration-200 cursor-default border border-line-soft hover:border-shu-200 hover:shadow-md"
-            >
-              {/* brand marks are drawn for light backgrounds, so in space they sit on a pale chip */}
-              <span className="flex h-8 w-8 items-center justify-center space:h-9 space:w-9 space:rounded-lg space:bg-white/90">
-                {tech.isOpenAI ? (
-                  <OpenAIMark size={28} />
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={tech.src}
-                    alt={tech.name}
-                    className={tech.wide ? "h-6 w-10 object-contain space:w-8" : "h-7 w-7 object-contain"}
-                    draggable={false}
-                  />
-                )}
-              </span>
-              <span className="text-[10px] text-faint text-center leading-tight group-hover:text-ink-soft transition-colors">{tech.name}</span>
-            </motion.div>
-          ))}
-        </div>
+        <FloatingTechField items={techStack} active={inView} />
 
-        {/* Development Flow */}
         <div ref={flowRef}>
           <SectionEyebrow align="center">Development Flow</SectionEyebrow>
-          <motion.h3 initial={{ opacity: 0, y: 18 }} animate={flowIn ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 }} className="text-2xl md:text-3xl font-bold text-sumi text-center mb-12">
+          <motion.h3
+            initial={{ opacity: 0, y: 18 }}
+            animate={flowIn ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mb-12 text-center text-2xl font-bold text-sumi md:text-3xl"
+          >
             {t.technology.flowTitle}
           </motion.h3>
 
           <div className="relative">
-            <div className="hidden lg:block absolute top-8 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-300 to-transparent" />
+            <div className="absolute top-8 right-0 left-0 hidden h-px bg-gradient-to-r from-transparent via-gold-300 to-transparent lg:block" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 lg:gap-2">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-7 lg:gap-2">
               {devFlow.map((step, i) => (
                 <motion.div
                   key={step.step}
                   initial={{ opacity: 0, y: 28 }}
                   animate={flowIn ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.2 + i * 0.08 }}
-                  className="relative flex lg:flex-col items-start lg:items-center gap-4 lg:gap-3"
+                  className="relative flex items-start gap-4 lg:flex-col lg:items-center lg:gap-3"
                 >
                   {i < devFlow.length - 1 && (
-                    <div className="lg:hidden absolute left-5 top-12 w-px h-full bg-gradient-to-b from-gold-300 to-transparent" />
+                    <div className="absolute top-12 left-5 h-full w-px bg-gradient-to-b from-gold-300 to-transparent lg:hidden" />
                   )}
-                  <div className="relative z-10 w-11 h-11 rounded-full bg-popover border border-shu-200 flex items-center justify-center flex-shrink-0 hover:border-shu-400 hover:shadow-md transition-all">
+                  <div className="relative z-10 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border border-shu-200 bg-popover transition-all hover:border-shu-400 hover:shadow-md">
                     <span
                       aria-hidden="true"
                       className="icon-mask h-5 w-5 opacity-80"
                       style={{ "--icon": `url(${step.icon})` } as CSSProperties}
                     />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-popover border border-gold-300 flex items-center justify-center shadow-sm">
-                      <span className="text-[8px] text-accent font-bold leading-none">{i + 1}</span>
+                    <div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border border-gold-300 bg-popover shadow-sm">
+                      <span className="text-[8px] leading-none font-bold text-accent">{i + 1}</span>
                     </div>
                   </div>
                   <div className="lg:text-center">
-                    <div className="text-xs text-accent font-mono mb-0.5">{step.step}</div>
-                    <div className="text-sumi text-sm font-semibold">{step.title}</div>
-                    <div className="text-faint text-xs mt-0.5 leading-tight">{t.technology.flow[step.key]}</div>
+                    <div className="mb-0.5 font-mono text-xs text-accent">{step.step}</div>
+                    <div className="text-sm font-semibold text-sumi">{step.title}</div>
+                    <div className="mt-0.5 text-xs leading-tight text-faint">{t.technology.flow[step.key]}</div>
                   </div>
                 </motion.div>
               ))}
