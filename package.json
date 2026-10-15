@@ -11,11 +11,11 @@
     "seed:portfolio": "node scripts/seed-portfolio.mjs"
   },
   "engines": {
-    "node": ">=20.9.0"
+    "node": "20.x"
   },
   "allowScripts": {
     "sharp": true,
-    "unjs-resolver": true
+    "unrs-resolver": true
   },
   "dependencies": {
     "@fontsource/noto-sans-jp": "^5.3.0",
