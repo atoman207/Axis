@@ -64,9 +64,11 @@ export default function Header() {
           <div className="ml-auto flex items-center gap-2 xl:ml-7">
             <PreferenceControls className="hidden min-[520px]:flex" />
 
-            <SiteButton href="/contact" className="hidden px-5 py-2.5 md:inline-flex">
-              {t.header.contact}
-            </SiteButton>
+            <div className="hidden xl:block">
+              <SiteButton href="/contact" className="px-5 py-2.5">
+                {t.header.contact}
+              </SiteButton>
+            </div>
 
             <button
               className="flex flex-col gap-1.5 p-2 xl:hidden"

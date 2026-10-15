@@ -19,14 +19,14 @@ export default function Chatbot() {
   useEffect(() => {
     if (!open) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handlePointerOutside = (event: PointerEvent) => {
       if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
         setOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handlePointerOutside);
+    return () => document.removeEventListener("pointerdown", handlePointerOutside);
   }, [open]);
 
   return (
@@ -68,16 +68,6 @@ export default function Chatbot() {
               </div>
             </div>
 
-            <div className="border-t border-line-soft px-4 py-3">
-              <Link
-                href="/contact"
-                onClick={() => setOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-shu-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-shu-700"
-              >
-                {t.chatbot.cta}
-                <span aria-hidden>→</span>
-              </Link>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

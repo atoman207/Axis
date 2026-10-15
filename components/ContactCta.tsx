@@ -30,7 +30,7 @@ export default function ContactCta() {
           Contact
         </SectionEyebrow>
 
-        <h2 className="mx-auto whitespace-nowrap font-sans text-[clamp(1.15rem,4.2vw,2.5rem)] font-bold leading-snug tracking-[0.02em] text-white">
+        <h2 className="mx-auto max-w-[20em] font-sans text-[clamp(1.05rem,4.2vw,2.5rem)] font-bold leading-snug tracking-[0.02em] text-white sm:max-w-none sm:whitespace-nowrap">
           {cta.title}
         </h2>
 

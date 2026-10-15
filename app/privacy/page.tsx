@@ -7,7 +7,7 @@ export const generateMetadata = () => getPageMetadata("privacy");
 export default function PrivacyPage() {
   return (
     <>
-      <PageHeader page="privacy" />
+      <PageHeader page="privacy" backgroundImage="/career/security.png" />
       <div className="page-content">
         <PrivacyPolicy />
       </div>

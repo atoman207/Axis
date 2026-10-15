@@ -9,13 +9,44 @@ function lucide(name: string) {
   return `https://cdn.jsdelivr.net/npm/lucide-static@0.469.0/icons/${name}.svg`;
 }
 
+/** Card backgrounds — numbered assets mapped in reverse (1st card → 6, …, 6th → 1). */
 const values = [
-  { key: "innovation", title: "Innovation",          icon: lucide("zap"),            border: "border-shu-100",  from: "from-shu-50"  },
-  { key: "quality",    title: "Quality",             icon: lucide("badge-check"),    border: "border-gold-200", from: "from-gold-50" },
-  { key: "trust",      title: "Trust",               icon: lucide("handshake"),      border: "border-ai-100",   from: "from-ai-50"   },
-  { key: "speed",      title: "Speed",               icon: lucide("gauge"),          border: "border-shu-100",  from: "from-shu-50"  },
-  { key: "ownership",  title: "Ownership",           icon: lucide("crown"),          border: "border-shu-100",  from: "from-shu-50"  },
-  { key: "learning",   title: "Continuous Learning", icon: lucide("graduation-cap"), border: "border-ai-200",   from: "from-ai-50"   },
+  {
+    key: "innovation",
+    title: "Innovation",
+    icon: lucide("zap"),
+    bgSrc: "/skillcard/value-6.png",
+  },
+  {
+    key: "quality",
+    title: "Quality",
+    icon: lucide("badge-check"),
+    bgSrc: "/skillcard/value-5.png",
+  },
+  {
+    key: "trust",
+    title: "Trust",
+    icon: lucide("handshake"),
+    bgSrc: "/skillcard/value-4.png",
+  },
+  {
+    key: "speed",
+    title: "Speed",
+    icon: lucide("gauge"),
+    bgSrc: "/skillcard/value-3.png",
+  },
+  {
+    key: "ownership",
+    title: "Ownership",
+    icon: lucide("crown"),
+    bgSrc: "/skillcard/value-2.png",
+  },
+  {
+    key: "learning",
+    title: "Continuous Learning",
+    icon: lucide("graduation-cap"),
+    bgSrc: "/skillcard/value-1.png",
+  },
 ] as const;
 
 export default function Mission() {
@@ -37,18 +68,21 @@ export default function Mission() {
             initial={{ opacity: 0, y: 28 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mx-auto max-w-3xl text-2xl font-bold leading-tight text-sumi sm:text-3xl md:text-5xl"
+            className="mx-auto max-w-5xl text-xl font-bold leading-tight text-sumi sm:whitespace-nowrap sm:text-3xl md:text-5xl"
           >
-            {t.mission.headingLead}<span className="gradient-text">{t.mission.headingAccent}</span>
+            {t.mission.headingLead}
+            <span className="gradient-text">{t.mission.headingAccent}</span>
           </motion.h2>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted sm:mt-6 md:text-base"
+            className="mx-auto mt-4 max-w-2xl space-y-4 text-sm leading-relaxed text-muted sm:mt-6 md:text-base"
           >
-            {t.mission.body[0]}<br />{t.mission.body[1]}
-          </motion.p>
+            {t.mission.body.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </motion.div>
         </div>
 
         {/* Vision */}
@@ -61,33 +95,50 @@ export default function Mission() {
           <div className="absolute inset-0 bg-gradient-to-br from-shu-50/60 to-gold-50/30" />
           <SectionEyebrow align="center" className="relative">Vision</SectionEyebrow>
           <p className="relative text-xl font-bold leading-relaxed text-sumi sm:text-2xl md:text-4xl">
-            {t.mission.visionLead}<br />
+            {t.mission.visionLead}
             <span className="gradient-text">{t.mission.visionAccent}</span>
-            <span className="text-sumi">{t.mission.visionTail}</span>
+            {t.mission.visionTail}
           </p>
+          <div className="relative mx-auto mt-5 max-w-2xl space-y-4 text-sm leading-relaxed text-muted sm:mt-6 md:text-base">
+            {t.mission.visionBody.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </motion.div>
 
         {/* Values */}
         <div>
           <SectionEyebrow align="center" delay={0.25}>Value</SectionEyebrow>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {values.map((v, i) => (
               <motion.div
                 key={v.title}
                 initial={{ opacity: 0, y: 28 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.4 + i * 0.07 }}
-                className={`rounded-2xl border bg-surface p-5 transition-all duration-300 hover:shadow-md sm:p-6 ${v.border}`}
+                className="group relative min-h-[220px] overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-300 hover:shadow-md sm:min-h-[240px]"
               >
-                <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl border bg-gradient-to-br to-transparent ${v.from} ${v.border}`}>
-                  <span
-                    aria-hidden="true"
-                    className="icon-mask h-5 w-5 opacity-80"
-                    style={{ "--icon": `url(${v.icon})` } as CSSProperties}
-                  />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${v.bgSrc})` }}
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-[#060d1f]/90 via-[#060d1f]/68 to-[#060d1f]/30"
+                />
+
+                <div className="relative z-10 flex h-full flex-col p-5 sm:p-6">
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/25 bg-white/10 backdrop-blur-sm">
+                    <span
+                      aria-hidden="true"
+                      className="icon-mask h-5 w-5 opacity-90"
+                      style={{ "--icon": `url(${v.icon})`, backgroundColor: "#ffffff" } as CSSProperties}
+                    />
+                  </div>
+                  <h3 className="mb-2 font-semibold text-white">{v.title}</h3>
+                  <p className="text-sm leading-relaxed text-white/80">{t.mission.values[v.key]}</p>
                 </div>
-                <h3 className="text-sumi font-semibold mb-2">{v.title}</h3>
-                <p className="text-muted text-sm leading-relaxed">{t.mission.values[v.key]}</p>
               </motion.div>
             ))}
           </div>

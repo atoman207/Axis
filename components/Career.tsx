@@ -7,130 +7,49 @@ import { useI18n } from "@/components/PreferencesProvider";
 import SectionEyebrow from "@/components/SectionEyebrow";
 import SiteButton from "@/components/SiteButton";
 
-function devicon(path: string) {
-  return `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${path}`;
-}
-
-function simpleIcon(slug: string, hex?: string) {
-  return `https://cdn.simpleicons.org/${slug}${hex ? `/${hex}` : ""}`;
-}
-
-/** OpenAI's mark ships colorless from third-party CDNs, so it's inlined here. */
-function OpenAIMark({ size = 18 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="#74AA9C" style={{ display: "block" }}>
-      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
-    </svg>
-  );
-}
-
-type Skill = { name: string; src?: string; isOpenAI?: boolean };
-
 type PositionId = "frontend" | "backend" | "ai" | "cloud" | "design";
 
-/** Everything about a position that doesn't change with the language. */
-type PositionStyle = {
+type Position = {
   id: PositionId;
   role: string;
-  type: "both" | "contract";
   bg: string;
-  skills: Skill[];
-  badgeText: string;
-  dot: string;
   border: string;
   glow: string;
 };
 
-/** A position with its employment type and description in the current language. */
-type Position = Omit<PositionStyle, "type"> & { type: string; desc: string };
-
-const positions: PositionStyle[] = [
+const positions: Position[] = [
   {
     id: "frontend",
     role: "Frontend Engineer",
-    type: "both",
-    bg: "/career/frontend-bg.jpg",
-    skills: [
-      { name: "React", src: devicon("react/react-original.svg") },
-      { name: "Next.js", src: simpleIcon("nextdotjs", "FFFFFF") },
-      { name: "TypeScript", src: devicon("typescript/typescript-original.svg") },
-      { name: "Tailwind CSS", src: devicon("tailwindcss/tailwindcss-original.svg") },
-      { name: "JavaScript", src: devicon("javascript/javascript-original.svg") },
-      { name: "Vite", src: devicon("vitejs/vitejs-original.svg") },
-    ],
-    badgeText: "text-shu-300",
-    dot: "bg-shu-400",
+    bg: "/skillcard/skillcard-4.png",
     border: "border-shu-400/50",
     glow: "rgba(86, 145, 251, 0.55)",
   },
   {
     id: "backend",
     role: "Backend Engineer",
-    type: "both",
-    bg: "/career/backend-bg.jpg",
-    skills: [
-      { name: "Python", src: devicon("python/python-original.svg") },
-      { name: "FastAPI", src: devicon("fastapi/fastapi-original.svg") },
-      { name: "Node.js", src: devicon("nodejs/nodejs-original.svg") },
-      { name: "PostgreSQL", src: devicon("postgresql/postgresql-original.svg") },
-      { name: "Redis", src: devicon("redis/redis-original.svg") },
-      { name: "Docker", src: devicon("docker/docker-original.svg") },
-    ],
-    badgeText: "text-sky-300",
-    dot: "bg-sky-400",
+    bg: "/skillcard/skillcard-5.png",
     border: "border-sky-400/50",
     glow: "rgba(56, 189, 248, 0.55)",
   },
   {
     id: "ai",
     role: "AI Engineer",
-    type: "both",
-    bg: "/career/ai-bg.jpg",
-    skills: [
-      { name: "OpenAI", isOpenAI: true },
-      { name: "Python", src: devicon("python/python-original.svg") },
-      { name: "LangChain", src: simpleIcon("langchain") },
-      { name: "Claude", src: simpleIcon("anthropic", "D4A27F") },
-      { name: "Gemini", src: simpleIcon("googlegemini", "8E75F0") },
-      { name: "Hugging Face", src: simpleIcon("huggingface", "FFD21E") },
-    ],
-    badgeText: "text-gold-300",
-    dot: "bg-gold-400",
+    bg: "/skillcard/skillcard-3.png",
     border: "border-gold-400/50",
     glow: "rgba(125, 211, 252, 0.55)",
   },
   {
     id: "cloud",
     role: "Cloud Engineer",
-    type: "both",
-    bg: "/career/cloud-bg.jpg",
-    skills: [
-      { name: "AWS", src: devicon("amazonwebservices/amazonwebservices-original-wordmark.svg") },
-      { name: "Azure", src: devicon("azure/azure-original.svg") },
-      { name: "Terraform", src: devicon("terraform/terraform-original.svg") },
-      { name: "Kubernetes", src: devicon("kubernetes/kubernetes-plain.svg") },
-      { name: "Docker", src: devicon("docker/docker-original.svg") },
-      { name: "GitHub Actions", src: simpleIcon("githubactions", "2088FF") },
-    ],
-    badgeText: "text-ai-300",
-    dot: "bg-ai-400",
+    bg: "/skillcard/skillcard-2.png",
     border: "border-ai-400/50",
     glow: "rgba(142, 163, 204, 0.55)",
   },
   {
     id: "design",
     role: "UI/UX Designer",
-    type: "contract",
-    bg: "/career/design-bg.jpg",
-    skills: [
-      { name: "Figma", src: devicon("figma/figma-original.svg") },
-      { name: "Adobe XD", src: devicon("xd/xd-plain.svg") },
-      { name: "Illustrator", src: devicon("illustrator/illustrator-plain.svg") },
-      { name: "Photoshop", src: devicon("photoshop/photoshop-plain.svg") },
-      { name: "Sketch", src: devicon("sketch/sketch-original.svg") },
-    ],
-    badgeText: "text-pink-300",
-    dot: "bg-pink-400",
+    bg: "/skillcard/skillcard-1.png",
     border: "border-pink-400/50",
     glow: "rgba(244, 114, 182, 0.55)",
   },
@@ -153,34 +72,6 @@ const MOBILE_FAN = [
   { rotate: 18,  x: 72,  y: 36, z: 1 },
 ] as const;
 
-function SkillChips({ skills, compact = false }: { skills: Skill[]; compact?: boolean }) {
-  return (
-    <div className={`flex flex-wrap ${compact ? "gap-1.5" : "gap-2"}`}>
-      {skills.map((sk) => (
-        <span
-          key={sk.name}
-          title={sk.name}
-          className={`flex items-center justify-center rounded-lg bg-white/90 shadow-sm ${
-            compact ? "h-8 w-8" : "h-9 w-9"
-          }`}
-        >
-          {sk.isOpenAI ? (
-            <OpenAIMark size={compact ? 15 : 18} />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={sk.src}
-              alt={sk.name}
-              className={compact ? "h-4 w-4 object-contain" : "h-5 w-5 object-contain"}
-              draggable={false}
-            />
-          )}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 function CareerCardFace({
   pos,
   expanded = false,
@@ -189,45 +80,16 @@ function CareerCardFace({
   expanded?: boolean;
 }) {
   return (
-    <>
-      <div className="absolute inset-0">
-        <Image
-          src={pos.bg}
-          alt=""
-          fill
-          className="object-cover"
-          sizes={expanded ? "(min-width: 768px) 420px, 90vw" : "(min-width: 768px) 240px, 170px"}
-          priority={expanded}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ai-950/80 via-ai-950/72 to-ai-950/92" />
-      </div>
-
-      <div className={`relative z-10 flex h-full flex-col ${expanded ? "p-7 md:p-8" : "p-4 md:p-5"}`}>
-        <div
-          className={`inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/10 backdrop-blur-sm ${pos.badgeText} ${
-            expanded ? "mb-5 px-3 py-1 text-xs" : "mb-3 px-2.5 py-0.5 text-[10px]"
-          }`}
-        >
-          <span className={`rounded-full ${pos.dot} ${expanded ? "h-1.5 w-1.5" : "h-1 w-1"}`} />
-          {pos.type}
-        </div>
-
-        <h3 className={`font-bold text-white ${expanded ? "mb-3 text-2xl md:text-3xl" : "mb-2 text-sm md:text-base"}`}>
-          {pos.role}
-        </h3>
-        <p
-          className={`leading-relaxed text-white/75 ${
-            expanded ? "mb-6 text-sm md:text-base" : "mb-auto line-clamp-4 text-[11px] md:text-xs"
-          }`}
-        >
-          {pos.desc}
-        </p>
-
-        <div className={expanded ? "mt-auto" : "mt-3"}>
-          <SkillChips skills={pos.skills} compact={!expanded} />
-        </div>
-      </div>
-    </>
+    <div className="absolute inset-0">
+      <Image
+        src={pos.bg}
+        alt={pos.role}
+        fill
+        className="object-cover object-top"
+        sizes={expanded ? "(min-width: 768px) 420px, 90vw" : "(min-width: 768px) 240px, 170px"}
+        priority={expanded}
+      />
+    </div>
   );
 }
 
@@ -293,19 +155,15 @@ export default function Career() {
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  // Mobile-first default avoids desktop fan offsets overflowing small screens before hydration.
+  const [isMobile, setIsMobile] = useState(true);
   const { t } = useI18n();
 
-  const localized: Position[] = positions.map((p) => ({
-    ...p,
-    type: t.career.types[p.type],
-    desc: t.career.positions[p.id],
-  }));
-  const selected = localized.find((p) => p.role === selectedRole) ?? null;
+  const selected = positions.find((p) => p.role === selectedRole) ?? null;
   const fan = isMobile ? MOBILE_FAN : FAN;
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
+    const mq = window.matchMedia("(max-width: 639px)");
     const update = () => setIsMobile(mq.matches);
     update();
     mq.addEventListener("change", update);
@@ -314,7 +172,6 @@ export default function Career() {
 
   useEffect(() => {
     if (!selectedRole) return;
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedRole(null);
     };
@@ -356,8 +213,8 @@ export default function Career() {
         </div>
 
         {/* Fan / hand of cards */}
-        <div className="relative mx-auto mb-10 flex h-[360px] w-full max-w-4xl items-end justify-center sm:h-[400px] md:mb-14 md:h-[460px]">
-          {localized.map((pos, i) => {
+        <div className="relative mx-auto mb-10 flex h-[360px] w-full max-w-4xl items-end justify-center overflow-x-clip sm:h-[400px] md:mb-14 md:h-[460px]">
+          {positions.map((pos, i) => {
             const slot = fan[i];
             const isSelected = selectedRole === pos.role;
             if (isSelected) return null;

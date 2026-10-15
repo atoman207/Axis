@@ -191,15 +191,21 @@ const en: Dictionary = {
   },
 
   mission: {
-    headingLead: "Unlocking every company's full potential",
-    headingAccent: " with AI.",
+    headingLead: "Turning your ideas into",
+    headingAccent: " lasting value.",
     body: [
-      "Beyond improving day-to-day operations, we create new value",
-      "and build software that can take on the world.",
+      "We cherish our clients' aspirations and ideas, and open new possibilities with the power of AI and technology.",
+      "Our aim is not simply to build systems.",
+      "By facing each challenge head-on—from improving operations to creating new services—we generate value that drives business growth.",
     ],
-    visionLead: "Creating a future where",
-    visionAccent: "every company uses AI",
-    visionTail: " as a matter of course.",
+    visionLead: "Toward a future where everyone can use AI",
+    visionAccent: " to bring ideas to life.",
+    visionTail: "",
+    visionBody: [
+      "We aim for a society where anyone can make use of AI and digital technology, regardless of company size or technical knowledge.",
+      "Small ideas become new services, and eventually reach the world.",
+      "Together with our clients, we will create that future.",
+    ],
     values: {
       innovation: "We keep exploring cutting-edge technology to deliver innovative solutions.",
       quality: "We do not compromise on code quality or design.",
@@ -634,69 +640,293 @@ const en: Dictionary = {
   },
 
   privacy: {
-    intro: `${COMPANY.name} (“${COMPANY.brand}”, “we”) sets out below how we handle personal information obtained through this website (the “Site”).`,
+    policyTitle: "Personal Information Protection Policy",
+    intro: [
+      `${COMPANY.nameEn} (“we”, “our”, or “the Company”) develops, designs, and operates AI systems, SaaS products, and web applications. We regard the proper protection of personal information belonging to our clients, business partners, and website visitors as an important responsibility.`,
+      "We comply with Japan’s Act on the Protection of Personal Information (Act No. 57 of 2003; the “APPI”), other applicable laws and regulations, and guidelines issued by the Personal Information Protection Commission, and we strive to acquire, use, manage, and protect personal information appropriately.",
+      "This Privacy Policy sets out how we handle personal information and related data obtained through our official website (the “Site”).",
+    ],
     sections: [
       {
-        title: "1. Information We Collect",
-        body: [
-          "The company name, contact name, email address, phone number, and message you enter in the contact form.",
-          "Access information sent automatically when you use the Site, such as your IP address and browser type.",
+        title: "Article 1 — Personal Information Handling Business Operator",
+        body: ["Our basic information as a personal information handling business operator is as follows."],
+        table: [
+          { label: "Company name", value: COMPANY.name },
+          { label: "English name", value: COMPANY.nameEn },
+          { label: "Representative Director", value: COMPANY.representative },
+          { label: "Head office", value: COMPANY.addressEn },
+          {
+            label: "Main business",
+            value:
+              "AI / RAG system development, SaaS and web application development, business system development, cloud infrastructure build & operations, and DX support",
+          },
+          { label: "Contact for personal information", value: "The contact form on this Site" },
         ],
       },
       {
-        title: "2. Purposes of Use",
+        title: "Article 2 — Personal Information We Collect",
         body: [
-          "To reply to and follow up on your inquiries.",
-          "To prepare estimates and proposals for, and to carry out, the work you request.",
-          "To improve the Site and our services, and to prevent misuse.",
+          "To the extent necessary to provide services, respond to inquiries, and conduct business communications, we may collect the following information.",
+        ],
+        subsections: [
+          {
+            heading: "1. Information related to inquiries",
+            bullets: [
+              "Company or organization name",
+              "Name / contact person name",
+              "Email address",
+              "Phone number",
+              "Inquiry details",
+              "Consultation details, development requests, and other information provided voluntarily",
+            ],
+          },
+          {
+            heading: "2. Information related to business dealings and consultations",
+            bullets: [
+              "Request details and information needed for estimates",
+              "Business communication history",
+              "Information provided in connection with contracts, proposals, or meetings",
+              "Personal information contained in materials voluntarily provided by clients",
+            ],
+          },
+          {
+            heading: "3. Information collected through use of the Site",
+            bullets: [
+              "IP address",
+              "Browser and OS type",
+              "Access date and time",
+              "Pages viewed, referrer URL, and other access logs",
+              "Cookies and other identifiers, and settings stored in the browser",
+            ],
+          },
+        ],
+        after: [
+          "Depending on its content and whether it can be matched with other information, such access data is handled appropriately as personal information or personally related information.",
         ],
       },
       {
-        title: "3. Provision to Third Parties",
+        title: "Article 3 — Purposes of Use",
         body: [
-          "We do not provide personal information to third parties without your consent, except where required by law.",
+          "We use personal information we collect within the scope necessary to achieve the following purposes.",
+        ],
+        numbered: [
+          "To respond to inquiries, consultations, and questions, and to make necessary contact.",
+          "To conduct hearings, clarify requirements, and perform technical reviews for system development, AI adoption, web production, and related work.",
+          "To prepare estimates and proposals, and to conclude and manage contracts.",
+          "To perform requested work and to communicate about progress, delivery, and operations/maintenance.",
+          "To improve Site quality and usability, and to understand how the Site is used.",
+          "To prevent unauthorized access, misuse, spam, and other harmful activity, and to maintain security.",
+          "To manage inquiry and request history so we can provide smooth customer support.",
+          "To fulfill legal obligations, prevent disputes, and take necessary action.",
+          "To properly carry out work incidental to the purposes above.",
+        ],
+        after: [
+          "Except where permitted by law, we do not handle personal information beyond the scope necessary to achieve the specified purposes of use without the individual’s consent.",
         ],
       },
       {
-        title: "4. Outsourcing",
+        title: "Article 4 — Proper Acquisition of Personal Information",
         body: [
-          "To the extent necessary for the purposes above, we may outsource tasks such as email delivery and server operation. In that case we select contractors appropriately and supervise them as needed.",
+          "We acquire personal information by lawful and fair means and do not acquire it by deception or other improper methods.",
+          "When you provide personal information directly through the contact form or similar channels, we state the purposes of use in advance and ask only for information within the necessary scope.",
+          "Except where exceptions under law apply, we obtain prior consent before acquiring sensitive personal information such as race, creed, or medical history.",
         ],
       },
       {
-        title: "5. Security",
+        title: "Article 5 — Provision to Third Parties",
         body: [
-          "We take necessary and appropriate measures to prevent the leakage, loss, or damage of personal information.",
+          "Except where we have obtained prior consent or where permitted by law, we do not provide personal data to third parties.",
+          "However, we may provide personal data to the extent necessary in accordance with the APPI and other applicable laws in the following cases.",
+        ],
+        numbered: [
+          "Where required by law.",
+          "Where necessary to protect a person’s life, body, or property, and obtaining consent is difficult.",
+          "Where especially necessary to improve public health or promote the sound upbringing of children, and obtaining consent is difficult.",
+          "Where cooperation with a national or local government body in performing legally prescribed duties is necessary, and obtaining consent may hinder those duties.",
+          "Where provision to a third party is otherwise permitted under the APPI.",
+        ],
+        after: [
+          "Provision of personal data accompanying proper outsourcing under Article 27, Paragraph 5, Item 1 of the APPI is handled in accordance with that Act.",
         ],
       },
       {
-        title: "6. Cookies and External Services",
+        title: "Article 6 — Supervision of Contractors",
         body: [
-          "The Site uses cookies to remember your language and color-theme settings.",
-          "The Site uses Google Maps to show our location. When the map is displayed, Google LLC may collect information in accordance with its own privacy policy.",
+          "To the extent necessary for business operations and service delivery, we may outsource work such as system development, server management, email delivery, and maintenance to external contractors.",
+          "In such cases, pursuant to Article 25 of the APPI, we exercise necessary and appropriate supervision so that personal data is securely managed by the contractor.",
+          "Specifically, according to the sensitivity of the information and the nature of the outsourced work, we confirm and manage matters including the following.",
+        ],
+        bullets: [
+          "The contractor’s personal information protection framework and information management practices",
+          "Confidentiality obligations and the permitted scope of use of personal information",
+          "Access rights to information needed for the work",
+          "Prohibition of use outside the stated purpose and unauthorized disclosure of personal data",
+          "Conditions and controls for any further subcontracting",
+          "Return, deletion, or appropriate retention of information when the engagement ends",
+          "Reporting and response procedures if a data incident occurs",
+        ],
+        after: [
+          "Even when contractors handle personal data, we strive to ensure that appropriate protective measures are in place.",
         ],
       },
       {
-        title: "7. Disclosure, Correction, and Deletion",
+        title: "Article 7 — Security Control Measures",
         body: [
-          "If you request the disclosure, correction, suspension of use, or deletion of your personal information, we will verify your identity and respond promptly in accordance with the law.",
+          "To prevent leakage, loss, damage, unauthorized access, and other risks to personal data, we take necessary and appropriate security control measures suited to the nature of the information and the scale of our business.",
+          "Those measures include the following.",
+        ],
+        subsections: [
+          {
+            heading: "1. Organizational measures",
+            body: [
+              "We clarify responsibility for personal information management, monitor handling status, and maintain reporting and response procedures if issues arise.",
+            ],
+          },
+          {
+            heading: "2. Personnel measures",
+            body: [
+              "We require officers, employees, and contractors who handle personal information to maintain confidentiality and manage information appropriately.",
+            ],
+          },
+          {
+            heading: "3. Physical measures",
+            body: [
+              "We manage devices and storage media that hold personal information to help prevent theft, loss, and unauthorized viewing by third parties.",
+            ],
+          },
+          {
+            heading: "4. Technical measures",
+            body: [
+              "We work to keep information secure through appropriate access controls, credential management, protection of communications, and measures against unauthorized access.",
+            ],
+          },
+          {
+            heading: "5. Management of external contractors and cloud services",
+            body: [
+              "When using external services, we review terms of service, data storage locations, access controls, and security measures, and take necessary protective steps.",
+            ],
+          },
+        ],
+        after: [
+          "Except for details that could impair security if disclosed, we will appropriately explain our security measures in response to inquiries, in accordance with applicable law.",
         ],
       },
       {
-        title: "8. Changes to This Policy",
+        title: "Article 8 — Information Management When Using AI Services",
         body: [
-          "We may revise this policy as necessary. The revised policy applies from the time it is posted on the Site.",
+          "As a company that develops and supports the introduction of AI systems, we also take care when managing information used with AI services.",
+          "When we use external generative AI or cloud AI services in the course of our work, we review the nature of the information involved, the purpose of use, the provider’s terms, and their data-handling policies.",
+          "If personal data or confidential information entrusted by a client must be handled with an external AI service, we take appropriate steps—such as obtaining necessary consent, supervising contractors, and minimizing input data—in accordance with applicable law and our contracts with clients.",
+          "Materials, technical information, business concepts, and other confidential information entrusted by clients are managed appropriately under contractual confidentiality obligations.",
         ],
       },
       {
-        title: "9. Contact",
+        title: "Article 9 — Provision Involving Overseas Operators",
         body: [
-          "For questions about how we handle personal information, please use the contact form on the Site.",
-          `${COMPANY.name} — ${COMPANY.addressEn}`,
+          "When we use cloud or other external services, operators located outside Japan may be involved.",
+          "If we provide personal data to a third party outside Japan, we take legally required steps under Article 28 of the APPI and related rules, including obtaining necessary consent, confirming the recipient’s personal information protection framework, and ensuring appropriate safeguards.",
+          "When overseas contractors handle personal data, we strive for appropriate security management in light of the country of location, legal system, information governance, and contract terms.",
+        ],
+      },
+      {
+        title: "Article 10 — Use of Cookies and Similar Technologies",
+        body: [
+          "The Site may use cookies, local storage, and similar technologies to improve convenience and retain display settings.",
+          "For example, we use them to remember language and color-theme preferences so your settings can be applied on later visits.",
+          "Technical information may also be handled for security and to understand Site usage as part of ordinary operations.",
+          "You may be able to restrict cookies in your browser settings, but some preference-saving features may then stop working correctly.",
+          "If cookie or other identifier data constitutes personal information or personally related information, we handle it in accordance with applicable law.",
+        ],
+      },
+      {
+        title: "Article 11 — Use of External Services",
+        subsections: [
+          {
+            heading: "1. Google Maps",
+            body: [
+              "The Site uses Google Maps, provided by Google LLC, to display our location and access information.",
+              "When Google Maps is displayed or used, information such as IP address, browser details, device information, and cookies may be sent to or collected by Google.",
+              "Please review Google’s privacy policy for how Google handles information.",
+            ],
+          },
+          {
+            heading: "2. Other external services",
+            body: [
+              "If we introduce analytics, advertising, inquiry-support, or similar services, we will review how those services collect and transmit information and the applicable laws, and we will revise this Policy or provide separate notice as needed.",
+            ],
+          },
+        ],
+        links: [
+          {
+            label: "Google Privacy Policy",
+            href: "https://policies.google.com/privacy?hl=en",
+          },
+        ],
+      },
+      {
+        title: "Article 12 — Retention Period and Deletion",
+        body: [
+          "We retain personal information for the period needed to achieve the purposes of use and any period required by law.",
+          "Except where retention is required by law or contract, we strive to delete personal data without delay once it is no longer needed.",
+          "Information whose retention period has ended, or that is otherwise unnecessary, is deleted or discarded by an appropriate method for its nature and storage medium.",
+        ],
+      },
+      {
+        title: "Article 13 — Disclosure, Correction, Suspension of Use, and Related Requests",
+        body: [
+          "If you request notification of purposes of use, disclosure, correction, addition, deletion, suspension of use, erasure, or suspension of third-party provision regarding personal data we hold, we will respond appropriately under the APPI and other applicable laws.",
+          "We likewise handle requests for disclosure of third-party provision records as provided by law.",
+        ],
+        subsections: [
+          {
+            heading: "How to make a request",
+            numbered: [
+              "Contact us via the Site’s contact form, stating that your message concerns a personal information request and describing the action you seek.",
+              "We will guide you through any confirmation steps that are needed.",
+              "We will verify by appropriate means that the request comes from you or a duly authorized representative.",
+              "We will review the request under applicable law and conduct any necessary investigation.",
+              "We will take the legally required action and inform you of the result.",
+            ],
+          },
+        ],
+        after: [
+          "For identity verification, we may ask you to provide information within the scope necessary for confirmation.",
+          "If we cannot comply with a request under law, or cannot fully implement the measures you seek, we will notify you and explain the reasons as appropriate.",
+        ],
+      },
+      {
+        title: "Article 14 — Response to Personal Data Incidents",
+        body: [
+          "If we become aware of leakage, loss, damage, unauthorized access, or a similar incident involving personal data—or a risk thereof—we will promptly investigate the facts as the situation requires, prevent further harm, and take measures to prevent recurrence.",
+          "Where reporting to the Personal Information Protection Commission or notification to affected individuals is required under Article 26 of the APPI or related rules, we will comply with the law.",
+        ],
+      },
+      {
+        title: "Article 15 — Complaints and Consultations",
+        body: [
+          "We appropriately accept questions, consultations, and complaints about our handling of personal information, review their content, and strive to respond sincerely and promptly.",
+          "Please contact us through the Site’s contact form.",
+        ],
+      },
+      {
+        title: "Article 16 — Revisions to This Privacy Policy",
+        body: [
+          "We may revise this Privacy Policy in response to legal amendments, changes in our business, addition of services, or reviews of our information management practices.",
+          "When we revise the Policy, we will post the revised content and effective date on the Site.",
+          "Where law requires notice to individuals or obtaining consent for a change, we will follow the necessary procedures.",
+        ],
+      },
+      {
+        title: "Article 17 — Contact Desk",
+        body: [
+          "For inquiries about personal information, requests for disclosure and related actions, or complaints and consultations, please contact:",
+          COMPANY.nameEn,
+          `Representative Director: ${COMPANY.representative}`,
+          `Address: ${COMPANY.addressEn}`,
+          "Desk: Contact form on the official website",
         ],
       },
     ],
-    contactLink: "Go to the contact form",
   },
 
   chatbot: {
