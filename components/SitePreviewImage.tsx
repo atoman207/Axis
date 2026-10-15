@@ -89,7 +89,7 @@ export default function SitePreviewImage({ url, categoryLabel, imageUrl }: Props
 
     const loadHeroImage = async () => {
       try {
-        const response = await fetch(`/api/site-hero?url=${encodeURIComponent(url)}`);
+        const response = await fetch(`/api/site?kind=hero&url=${encodeURIComponent(url)}`);
         if (!response.ok || isCancelled) return;
 
         const data = (await response.json()) as HeroResponse;
@@ -183,7 +183,7 @@ export default function SitePreviewImage({ url, categoryLabel, imageUrl }: Props
             src={imageSrc}
             alt={`${siteName} site preview`}
             loading="lazy"
-            crossOrigin={imageSrc.startsWith("/api/site-image") ? "anonymous" : undefined}
+            crossOrigin={imageSrc.startsWith("/api/site?") ? "anonymous" : undefined}
             onLoad={handleLoad}
             onError={handleError}
             className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"

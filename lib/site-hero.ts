@@ -287,7 +287,8 @@ export function getProxiedImageUrl(imageUrl: string, pageUrl?: string) {
   const params = new URLSearchParams({ url: imageUrl });
   if (pageUrl) params.set("page", pageUrl);
 
-  return `/api/site-image?${params.toString()}`;
+  params.set("kind", "image");
+  return `/api/site?${params.toString()}`;
 }
 
 export function toDisplayCandidates(imageUrls: string[], pageUrl?: string) {

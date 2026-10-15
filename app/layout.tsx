@@ -14,46 +14,62 @@ import FloatingWidgets from "@/components/FloatingWidgets";
 import PreferencesProvider from "@/components/PreferencesProvider";
 import SpaceBackground from "@/components/SpaceBackground";
 import { dictionaries } from "@/lib/i18n/dictionaries";
-import { getPreferences } from "@/lib/preferences/server";
+import { DEFAULT_LANG, DEFAULT_THEME } from "@/lib/preferences/config";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { lang } = await getPreferences();
-  const { meta } = dictionaries[lang];
+const meta = dictionaries[DEFAULT_LANG].meta;
 
-  return {
-    title: {
-      default: meta.title,
-      template: `%s | ${meta.siteName}`,
-    },
+export const metadata: Metadata = {
+  title: {
+    default: meta.title,
+    template: `%s | ${meta.siteName}`,
+  },
+  description: meta.description,
+  keywords: meta.keywords,
+  openGraph: {
+    title: meta.title,
     description: meta.description,
-    keywords: meta.keywords,
-    openGraph: {
-      title: meta.title,
-      description: meta.description,
-      siteName: meta.siteName,
-      locale: meta.ogLocale,
-      type: "website",
-    },
-    twitter: {
-      card: "summary",
-      title: meta.title,
-      description: meta.description,
-    },
-  };
-}
+    siteName: meta.siteName,
+    locale: meta.ogLocale,
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: meta.title,
+    description: meta.description,
+  },
+};
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Language and background come from cookies, so the first paint is already right.
-  const { lang, theme } = await getPreferences();
-
+  // Defaults keep the whole tree static (Hobby ≤12 serverless functions).
+  // Cookies are applied before paint via the bootstrap script, then hydrated in PreferencesProvider.
   return (
-    // data-scroll-behavior: page-to-page navigation jumps to the top instead of smooth-scrolling there
-    <html lang={lang} data-theme={theme} data-scroll-behavior="smooth" className="h-full">
+    <html
+      lang={DEFAULT_LANG}
+      data-theme={DEFAULT_THEME}
+      data-scroll-behavior="smooth"
+      className="h-full"
+      suppressHydrationWarning
+    >
       <body className="min-h-full antialiased">
+        <Script id="pref-bootstrap" strategy="beforeInteractive">{`
+          (function () {
+            try {
+              var c = document.cookie || "";
+              function get(n) {
+                var m = c.match(new RegExp("(?:^|; )" + n + "=([^;]*)"));
+                return m ? decodeURIComponent(m[1]) : "";
+              }
+              var lang = get("axis-lang");
+              var theme = get("axis-theme");
+              if (lang === "ja" || lang === "en") document.documentElement.lang = lang;
+              if (theme === "space" || theme === "light") document.documentElement.dataset.theme = theme;
+            } catch (e) {}
+          })();
+        `}</Script>
         <Script id="clear-stale-sw" strategy="beforeInteractive">{`
           (function () {
             if (!("serviceWorker" in navigator)) return;
@@ -70,7 +86,7 @@ export default async function RootLayout({
             });
           })();
         `}</Script>
-        <PreferencesProvider initialLang={lang} initialTheme={theme}>
+        <PreferencesProvider initialLang={DEFAULT_LANG} initialTheme={DEFAULT_THEME}>
           <SpaceBackground />
           <div className="flex flex-col min-h-screen">
             <Header />

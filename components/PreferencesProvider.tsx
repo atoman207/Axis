@@ -1,13 +1,21 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { flushSync } from "react-dom";
-import { useRouter } from "next/navigation";
 import { dictionaries, type Dictionary } from "@/lib/i18n/dictionaries";
 import {
   LANG_COOKIE,
   PREFERENCE_MAX_AGE,
   THEME_COOKIE,
+  parseLang,
+  parseTheme,
   type Lang,
   type Theme,
 } from "@/lib/preferences/config";
@@ -31,6 +39,12 @@ function savePreference(name: string, value: string) {
   document.cookie = `${name}=${value}; path=/; max-age=${PREFERENCE_MAX_AGE}; samesite=lax`;
 }
 
+function readCookie(name: string) {
+  if (typeof document === "undefined") return undefined;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
 type Props = {
   initialLang: Lang;
   initialTheme: Theme;
@@ -38,20 +52,24 @@ type Props = {
 };
 
 export default function PreferencesProvider({ initialLang, initialTheme, children }: Props) {
-  const router = useRouter();
   const [lang, setLangState] = useState(initialLang);
   const [theme, setThemeState] = useState(initialTheme);
 
-  const setLang = useCallback(
-    (next: Lang) => {
-      setLangState(next);
-      savePreference(LANG_COOKIE, next);
-      document.documentElement.lang = next;
-      // Server-rendered pieces (page <title>, meta description) follow the cookie.
-      router.refresh();
-    },
-    [router]
-  );
+  // Hydrate from cookies after mount (server stays static / cookie-free).
+  useEffect(() => {
+    const nextLang = parseLang(readCookie(LANG_COOKIE));
+    const nextTheme = parseTheme(readCookie(THEME_COOKIE));
+    setLangState(nextLang);
+    setThemeState(nextTheme);
+    document.documentElement.lang = nextLang;
+    document.documentElement.dataset.theme = nextTheme;
+  }, []);
+
+  const setLang = useCallback((next: Lang) => {
+    setLangState(next);
+    savePreference(LANG_COOKIE, next);
+    document.documentElement.lang = next;
+  }, []);
 
   const setTheme = useCallback((next: Theme, origin?: Point) => {
     const root = document.documentElement;

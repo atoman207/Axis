@@ -9,7 +9,8 @@ import Strengths from "@/components/Strengths";
 import { dictionaries } from "@/lib/i18n/dictionaries";
 import { getPortfolio } from "@/lib/portfolio/db";
 
-export const dynamic = "force-dynamic";
+/** Refresh portfolio data periodically without making every page request dynamic. */
+export const revalidate = 300;
 
 const SERVICE_COUNT = Object.keys(dictionaries.ja.services.items).length;
 

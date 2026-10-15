@@ -4,7 +4,8 @@ import Works from "@/components/Works";
 import { getPageMetadata } from "@/lib/i18n/metadata";
 import { getPortfolio } from "@/lib/portfolio/db";
 
-export const dynamic = "force-dynamic";
+/** Refresh portfolio data periodically without making every page request dynamic. */
+export const revalidate = 300;
 
 export const generateMetadata = () => getPageMetadata("works");
 

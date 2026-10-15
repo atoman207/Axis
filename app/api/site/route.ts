@@ -1,6 +1,57 @@
 import { NextRequest, NextResponse } from "next/server";
+import { findSiteHeroImages, toDisplayCandidates } from "@/lib/site-hero";
 
+/**
+ * Combined site media helper (hero discovery + image proxy) so Hobby plan
+ * stays under the serverless-function limit.
+ *
+ * - GET /api/site?kind=hero&url=<page>
+ * - GET /api/site?kind=image&url=<image>&page=<page>
+ */
 export async function GET(request: NextRequest) {
+  const kind = request.nextUrl.searchParams.get("kind") ?? "hero";
+
+  if (kind === "hero") {
+    return handleHero(request);
+  }
+
+  if (kind === "image") {
+    return handleImage(request);
+  }
+
+  return NextResponse.json({ error: "Unknown kind. Use kind=hero or kind=image." }, { status: 400 });
+}
+
+async function handleHero(request: NextRequest) {
+  const pageUrl = request.nextUrl.searchParams.get("url");
+
+  if (!pageUrl) {
+    return NextResponse.json({ error: "Missing url parameter" }, { status: 400 });
+  }
+
+  try {
+    new URL(pageUrl);
+  } catch {
+    return NextResponse.json({ error: "Invalid url parameter" }, { status: 400 });
+  }
+
+  const imageUrls = await findSiteHeroImages(pageUrl);
+  const candidates = toDisplayCandidates(imageUrls, pageUrl);
+
+  return NextResponse.json(
+    {
+      imageUrl: imageUrls[0] ?? null,
+      candidates,
+    },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
+      },
+    }
+  );
+}
+
+async function handleImage(request: NextRequest) {
   const imageUrl = request.nextUrl.searchParams.get("url");
   const pageUrl = request.nextUrl.searchParams.get("page");
 

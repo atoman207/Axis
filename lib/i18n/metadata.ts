@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { dictionaries, type PageKey } from "@/lib/i18n/dictionaries";
-import { getPreferences } from "@/lib/preferences/server";
+import { DEFAULT_LANG } from "@/lib/preferences/config";
 
-/** Localized title / description for a page, following the visitor's language. */
+/**
+ * Localized title / description for a page.
+ * Uses the default language at build time so pages stay static on the Hobby plan
+ * (reading cookies in metadata would force every route dynamic).
+ */
 export async function getPageMetadata(page: PageKey): Promise<Metadata> {
-  const { lang } = await getPreferences();
-  return dictionaries[lang].meta.pages[page];
+  return dictionaries[DEFAULT_LANG].meta.pages[page];
 }
