@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { isFlightCursorActive } from "@/components/motion/FlightCursor";
 import { useTheme } from "@/components/PreferencesProvider";
 import { prefersReducedMotion } from "@/lib/motion";
 
@@ -24,6 +25,8 @@ export default function ClickRipples() {
     const onClick = (event: MouseEvent) => {
       // detail 0 = a keyboard "click" (Enter/Space), which has no position on screen
       if (event.detail === 0 || event.button !== 0 || prefersReducedMotion()) return;
+      // with the drawn aircraft, a mouse click blows it up instead (taps keep their ripple)
+      if (isFlightCursorActive() && (event as PointerEvent).pointerType !== "touch") return;
       while (layer.childElementCount >= MAX_RIPPLES) layer.firstElementChild?.remove();
 
       const ripple = document.createElement("span");

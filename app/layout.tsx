@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWidgets from "@/components/FloatingWidgets";
 import ClickRipples from "@/components/motion/ClickRipples";
+import FlightCursor from "@/components/motion/FlightCursor";
 import MotionProvider from "@/components/motion/MotionProvider";
 import NavigationProgress from "@/components/motion/NavigationProgress";
 import PreferencesProvider from "@/components/PreferencesProvider";
@@ -93,6 +94,7 @@ export default function RootLayout({
           <MotionProvider>
             <NavigationProgress />
             <ClickRipples />
+            <FlightCursor />
             <SpaceBackground />
             <div className="flex flex-col min-h-screen">
               <Header />

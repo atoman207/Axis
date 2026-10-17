@@ -912,6 +912,10 @@ textarea:-webkit-autofill:focus {
   cursor: text;
 }
 
+/* When FlightCursor runs it draws the craft itself and hides the system pointer with
+   its own injected style — so these image cursors are the touch / no-JS / reduced-motion
+   fallback. */
+
 /* ========= CLICK RIPPLES ========= */
 .click-ripple {
   position: absolute;
