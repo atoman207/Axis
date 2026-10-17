@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useId, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useI18n } from "@/components/PreferencesProvider";
+import SceneBoundary from "@/components/SceneBoundary";
+import { useWebGLSupport } from "@/lib/webgl";
 import SiteButton from "@/components/SiteButton";
 
 const ModalScene = dynamic(() => import("./ModalScene"), { ssr: false });
@@ -28,6 +30,10 @@ interface Props {
 export default function ServiceModal({ service, onClose }: Props) {
   const { t } = useI18n();
   const labels = t.services.modal;
+  const titleId = useId();
+  const webgl = useWebGLSupport();
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const isOpen = service !== null;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -36,13 +42,21 @@ export default function ServiceModal({ service, onClose }: Props) {
   }, [onClose]);
 
   useEffect(() => {
-    if (service) {
+    if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
-  }, [service]);
+  }, [isOpen]);
+
+  // Move focus into the dialog, and hand it back to the card that opened it.
+  useEffect(() => {
+    if (!isOpen) return;
+    const opener = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus({ preventScroll: true });
+    return () => opener?.focus({ preventScroll: true });
+  }, [isOpen]);
 
   return (
     <AnimatePresence>
@@ -61,7 +75,11 @@ export default function ServiceModal({ service, onClose }: Props) {
 
           {/* Three.js canvas */}
           <div className="absolute inset-0 opacity-25 pointer-events-none">
-            <ModalScene color={service.threeColor} />
+            {webgl && (
+              <SceneBoundary>
+                <ModalScene color={service.threeColor} />
+              </SceneBoundary>
+            )}
           </div>
 
           {/* Modal card */}
@@ -71,11 +89,15 @@ export default function ServiceModal({ service, onClose }: Props) {
             animate={{ scale: 1,    y: 0,  opacity: 1 }}
             exit={{    scale: 0.88, y: 24, opacity: 0 }}
             transition={{ type: "spring", damping: 28, stiffness: 320 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
             className="relative w-full max-w-2xl max-h-[88vh] overflow-y-auto rounded-3xl bg-popover border border-line shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
+              ref={closeRef}
               onClick={onClose}
               className="absolute top-5 right-5 w-9 h-9 rounded-full bg-sunken border border-line flex items-center justify-center text-faint hover:text-sumi hover:bg-line transition-all z-10"
               aria-label={labels.close}
@@ -91,7 +113,7 @@ export default function ServiceModal({ service, onClose }: Props) {
                 <span className={`text-xs tracking-[0.3em] uppercase font-medium ${service.accent} mb-2 block`}>
                   {service.subtitle || "Service"}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-bold text-sumi">{service.title}</h2>
+                <h2 id={titleId} className="text-2xl md:text-3xl font-bold text-sumi">{service.title}</h2>
               </div>
 
               {/* Overview */}
@@ -103,7 +125,13 @@ export default function ServiceModal({ service, onClose }: Props) {
               <div className="mb-8">
                 <h3 className="text-xs tracking-widest text-faint uppercase mb-4">{labels.process}</h3>
                 <div className="relative">
-                  <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-shu-400/50 via-gold-300/30 to-transparent" />
+                  <motion.div
+                    aria-hidden
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="absolute left-4 top-0 bottom-0 w-px origin-top bg-gradient-to-b from-shu-500 via-sky-400 to-violet-500/0 shadow-[0_0_8px_rgba(56,189,248,0.6)]"
+                  />
                   <div className="space-y-4 pl-10">
                     {service.steps.map((step, i) => (
                       <motion.div

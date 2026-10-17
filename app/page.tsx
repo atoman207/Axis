@@ -2,8 +2,10 @@ import ContactCta from "@/components/ContactCta";
 import Hero from "@/components/Hero";
 import HomeAbout from "@/components/HomeAbout";
 import HomeCompany from "@/components/HomeCompany";
+import HomeMarquee from "@/components/HomeMarquee";
 import HomeServices from "@/components/HomeServices";
 import HomeProjects from "@/components/HomeProjects";
+import HomeTechnology from "@/components/HomeTechnology";
 import HomeWorks, { type FeaturedWork } from "@/components/HomeWorks";
 import Strengths from "@/components/Strengths";
 import { dictionaries } from "@/lib/i18n/dictionaries";
@@ -31,7 +33,9 @@ export default async function Home() {
           services: SERVICE_COUNT,
         }}
       />
+      <HomeMarquee />
       <HomeServices />
+      <HomeTechnology />
       <HomeWorks works={allWorks} total={portfolio.totalProjectCount} />
       <HomeProjects />
       <Strengths />

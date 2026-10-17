@@ -25,9 +25,17 @@ void main() {
   vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
   float depth = -mvPosition.z;
 
-  float flicker = 0.5 + 0.5 * sin(uTime * (0.7 + aPhase * 2.6) + aPhase * 41.0);
+  // Atmospheric scintillation: three out-of-step rhythms read as irregular twinkling —
+  // quicker and stronger for bright stars, which also shimmer slightly in colour.
+  float bright = smoothstep(2.0, 4.6, aSize);
+  float pace = mix(0.8, 2.6, bright);
+  float s1 = sin(uTime * pace * (1.0 + aPhase * 1.7) + aPhase * 41.0);
+  float s2 = sin(uTime * pace * (2.3 + aPhase * 3.1) + aPhase * 17.0);
+  float s3 = sin(uTime * (0.31 + aPhase * 0.6) + aPhase * 7.0);
+  float flicker = clamp(0.5 + 0.3 * s1 + 0.15 * s2 + 0.2 * s3, 0.0, 1.0);
+  vec3 shimmer = vec3(0.18 * s2, 0.06 * s1, -0.18 * s2) * bright;
 
-  vColor = mix(aColor, mix(uInkA, uInkB, fract(aPhase * 7.31)), uLight);
+  vColor = mix(aColor * (1.0 + shimmer), mix(uInkA, uInkB, fract(aPhase * 7.31)), uLight);
   // anything about to pass the lens fades out instead of ballooning
   vAlpha = (1.0 - uTwinkle * flicker) * smoothstep(0.5, 6.0, depth);
   // only the brightest stars get diffraction spikes, and need room to draw them
@@ -143,13 +151,15 @@ function TwinklePoints({ rig, geometry, twinkle, opacity, inkOpacity }: TwinkleP
 /* Stars                                                                      */
 /* -------------------------------------------------------------------------- */
 
-// Mostly cool blue-white, with a few warm, mint and violet stars for variety.
+// Real star colours by surface temperature: mostly white and yellow-white,
+// a few hot blue-white stars and some cool orange giants.
 const STAR_TINTS: [color: string, share: number][] = [
-  ["#cfe0ff", 0.42],
-  ["#ffffff", 0.26],
-  ["#ffe9cc", 0.14],
-  ["#b9ffdf", 0.12],
-  ["#dccbff", 0.06],
+  ["#aabfff", 0.1], // B — blue-white
+  ["#cad7ff", 0.2], // A — white, faintly blue
+  ["#f8f7ff", 0.3], // F — white
+  ["#fff4ea", 0.2], // G — yellow-white, like the Sun
+  ["#ffd2a1", 0.13], // K — pale orange
+  ["#ffb56c", 0.07], // M — orange
 ];
 
 function createStars(count: number) {
@@ -194,7 +204,127 @@ export function Stars({ rig, count }: { rig: RigRef; count: number }) {
   return (
     <group ref={group}>
       <TwinklePoints rig={rig} geometry={geometry} twinkle={0.6} opacity={0.95} inkOpacity={0.42} />
+      <StarStreaks rig={rig} stars={geometry} />
     </group>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Motion streaks                                                             */
+/* -------------------------------------------------------------------------- */
+
+const STREAK_VERTEX = /* glsl */ `
+uniform vec2 uShift;
+attribute float aEnd;
+attribute vec3 aColor;
+
+varying vec3 vColor;
+varying float vFade;
+
+void main() {
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  // The camera flew forward and down during the "exposure": the star's earlier
+  // image sat deeper and lower, so its streak trails back toward the centre.
+  mvPosition.y -= aEnd * uShift.x;
+  mvPosition.z = min(mvPosition.z - aEnd * uShift.y, -0.5);
+  vColor = aColor;
+  vFade = 1.0 - aEnd;
+  gl_Position = projectionMatrix * mvPosition;
+}
+`;
+
+const STREAK_FRAGMENT = /* glsl */ `
+uniform float uOpacity;
+uniform float uLight;
+
+varying vec3 vColor;
+varying float vFade;
+
+void main() {
+  float alpha = vFade * vFade * uOpacity;
+  gl_FragColor = vec4(vColor * alpha, alpha * uLight);
+}
+`;
+
+/** Camera travel per unit of page scroll — mirrors the rig in SpaceScene. */
+const TRAVEL_Y = 2.2;
+const TRAVEL_Z = 9;
+
+/**
+ * Like a long camera exposure: while the page is flung, the brighter stars smear
+ * into streaks along the direction of travel, and settle back to points at rest.
+ */
+function StarStreaks({ rig, stars }: { rig: RigRef; stars: THREE.BufferGeometry }) {
+  const lines = useRef<THREE.LineSegments<THREE.BufferGeometry, THREE.ShaderMaterial>>(null);
+  const motion = useRef({ scroll: 0, velocity: 0, time: 0 });
+
+  const geometry = useMemo(() => {
+    const source = stars.attributes.position as THREE.BufferAttribute;
+    const colors = stars.attributes.aColor as THREE.BufferAttribute;
+    const sizes = stars.attributes.aSize as THREE.BufferAttribute;
+    const picked: number[] = [];
+    for (let i = 0; i < source.count; i++) if (sizes.getX(i) > 1.45) picked.push(i);
+
+    const positions = new Float32Array(picked.length * 6);
+    const tints = new Float32Array(picked.length * 6);
+    const ends = new Float32Array(picked.length * 2);
+    picked.forEach((index, i) => {
+      for (let end = 0; end < 2; end++) {
+        const v = i * 2 + end;
+        positions.set([source.getX(index), source.getY(index), source.getZ(index)], v * 3);
+        tints.set([colors.getX(index), colors.getY(index), colors.getZ(index)], v * 3);
+        ends[v] = end;
+      }
+    });
+
+    const lineGeometry = new THREE.BufferGeometry();
+    lineGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    lineGeometry.setAttribute("aColor", new THREE.BufferAttribute(tints, 3));
+    lineGeometry.setAttribute("aEnd", new THREE.BufferAttribute(ends, 1));
+    return lineGeometry;
+  }, [stars]);
+
+  const parameters = useMemo(
+    () => ({
+      uniforms: { uShift: { value: new THREE.Vector2() }, uOpacity: { value: 0 }, uLight: { value: 0 } },
+      vertexShader: STREAK_VERTEX,
+      fragmentShader: STREAK_FRAGMENT,
+      transparent: true,
+      premultipliedAlpha: true,
+      depthWrite: false,
+    }),
+    []
+  );
+
+  useFrame(() => {
+    const mesh = lines.current;
+    if (!mesh) return;
+    const { time, scroll, light } = rig.current;
+    const state = motion.current;
+    const dt = time - state.time;
+    state.time = time;
+    if (dt <= 0) {
+      mesh.visible = false;
+      return;
+    }
+
+    const velocity = (scroll - state.scroll) / dt;
+    state.scroll = scroll;
+    state.velocity = THREE.MathUtils.damp(state.velocity, velocity, 6, dt);
+
+    // how far the camera moved during a 0.6 s "exposure", capped for very hard flings
+    const exposure = THREE.MathUtils.clamp(state.velocity * 0.6, -0.12, 0.12);
+    const strength = THREE.MathUtils.smoothstep(Math.abs(exposure), 0.008, 0.05);
+    mesh.visible = strength > 0.01;
+    mesh.material.uniforms.uShift.value.set(exposure * TRAVEL_Y, exposure * TRAVEL_Z);
+    mesh.material.uniforms.uOpacity.value = strength * 0.8;
+    mesh.material.uniforms.uLight.value = light;
+  });
+
+  return (
+    <lineSegments ref={lines} geometry={geometry} frustumCulled={false} visible={false}>
+      <shaderMaterial args={[parameters]} />
+    </lineSegments>
   );
 }
 
@@ -209,9 +339,11 @@ const GALAXY_DEPTH = 62;
 function createGalaxy(count: number) {
   const random = createRandom(77041);
   const cloud = allocate(count);
+  // an old, warm core; young blue-white arms; pink star-forming knots along them
   const core = displayColor("#fff3d6");
-  const arms = displayColor("#6ee7b0");
-  const rim = displayColor("#7c6cff");
+  const arms = displayColor("#bcd2ff");
+  const rim = displayColor("#8a82ff");
+  const knot = displayColor("#ffb3d4");
   const tint = new THREE.Color();
 
   for (let i = 0; i < count; i++) {
@@ -227,6 +359,7 @@ function createGalaxy(count: number) {
     const t = radius / GALAXY_RADIUS;
     if (t < 0.35) tint.lerpColors(core, arms, t / 0.35);
     else tint.lerpColors(arms, rim, (t - 0.35) / 0.65);
+    if (t > 0.3 && random() < 0.05) tint.copy(knot);
     cloud.colors[i * 3] = tint.r;
     cloud.colors[i * 3 + 1] = tint.g;
     cloud.colors[i * 3 + 2] = tint.b;

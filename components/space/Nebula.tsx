@@ -51,7 +51,18 @@ void main() {
   vec3 wash = mix(uWashA, uWashB, smoothstep(0.3, 0.7, warp.y));
 
   float alpha = density * mix(0.42, 0.5, uLight);
-  gl_FragColor = vec4(mix(space, wash, uLight) * alpha, alpha * uLight);
+
+  // Milky Way: a broad, meandering band of unresolved starlight across the sky,
+  // clumped into star clouds and split by dark dust lanes (night sky only).
+  vec2 axis = vec2(0.878 * p.x + 0.479 * p.y, -0.479 * p.x + 0.878 * p.y);
+  float across = axis.y - 0.22 + 0.2 * (fbm(vec2(axis.x * 0.55, 3.7)) - 0.5);
+  float clouds = fbm(axis * vec2(1.3, 2.8) + vec2(t * 0.25, 0.0));
+  float dust = smoothstep(0.48, 0.78, fbm(axis * vec2(2.1, 5.2) + 11.0)) * exp(-across * across * 14.0);
+  float milky = exp(-across * across * 3.4) * (0.3 + 0.7 * clouds) * (1.0 - 0.85 * dust);
+  vec3 milkyColor = mix(vec3(0.6, 0.67, 0.88), vec3(0.97, 0.9, 0.8), smoothstep(0.45, 0.8, clouds));
+
+  vec3 light = mix(space, wash, uLight) * alpha + milkyColor * milky * 0.13 * (1.0 - uLight);
+  gl_FragColor = vec4(light, alpha * uLight);
 }
 `;
 

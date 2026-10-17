@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dbe4f0"/>
+    </linearGradient>
+  </defs>
+  <!-- drawn nose-up around the origin, then turned so the nose points up-left at the hotspot (4, 4) -->
+  <g transform="translate(14 14) rotate(-45)" stroke-linejoin="round">
+    <!-- soft white halo keeps the plane readable over the dark hero and footer -->
+    <g fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.2">
+      <path d="M-1.8 -3L-13 3.2L-13 5L-1.8 2.6ZM1.8 -3L13 3.2L13 5L1.8 2.6Z"/>
+      <path d="M0 -14C1.4 -14 1.9 -11.5 1.9 -9L1.9 9.5L0 12.5L-1.9 9.5L-1.9 -9C-1.9 -11.5 -1.4 -14 0 -14Z"/>
+    </g>
+    <!-- swept wings and tailplane -->
+    <path d="M-1.8 -3L-13 3.2L-13 5L-1.8 2.6ZM1.8 -3L13 3.2L13 5L1.8 2.6Z" fill="url(#wing)" stroke="#0b1730" stroke-width="0.7"/>
+    <path d="M-1.6 8L-6 11.2L-6 12.4L-1.4 10.8ZM1.6 8L6 11.2L6 12.4L1.4 10.8Z" fill="url(#wing)" stroke="#0b1730" stroke-width="0.6"/>
+    <!-- engines -->
+    <rect x="-7" y="0.2" width="2" height="3.6" rx="1" fill="#e2e8f0" stroke="#0b1730" stroke-width="0.5"/>
+    <rect x="5" y="0.2" width="2" height="3.6" rx="1" fill="#e2e8f0" stroke="#0b1730" stroke-width="0.5"/>
+    <!-- fuselage and cockpit -->
+    <path d="M0 -14C1.4 -14 1.9 -11.5 1.9 -9L1.9 9.5L0 12.5L-1.9 9.5L-1.9 -9C-1.9 -11.5 -1.4 -14 0 -14Z" fill="url(#body)" stroke="#0b1730" stroke-width="0.8"/>
+    <path d="M-1 -10.9Q0 -12.3 1 -10.9L1 -10L-1 -10Z" fill="#1a56db"/>
+    <path d="M0 -8V8" stroke="#2f6ff2" stroke-opacity="0.35" stroke-width="0.6"/>
+  </g>
+</svg>

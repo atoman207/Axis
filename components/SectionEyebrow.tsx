@@ -36,7 +36,13 @@ export default function SectionEyebrow({
         className,
       ].join(" ")}
     >
-      <span>{children}</span>
+      <motion.span
+        initial={{ opacity: 0, x: -10 }}
+        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+        transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </motion.span>
       <motion.span
         aria-hidden
         className="h-[2.5px] w-full origin-left rounded-full bg-yellow-400"

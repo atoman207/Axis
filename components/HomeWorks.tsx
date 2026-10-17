@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import ClipReveal from "@/components/motion/ClipReveal";
+import TiltCard from "@/components/motion/TiltCard";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
@@ -18,21 +20,26 @@ type Props = {
 
 function WorkCard({ site }: { site: FeaturedWork }) {
   return (
-    <a
-      href={`/go/${site.id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block overflow-hidden border border-line bg-surface transition-all duration-300 hover:-translate-y-0.5 hover:border-shu-300 hover:shadow-lg"
-    >
-      <SitePreviewImage url={site.url} imageUrl={site.image_url} categoryLabel={site.categoryLabel} />
-      <div className="flex flex-wrap gap-1.5 p-4 sm:p-5">
-        {site.stacks.map((stack) => (
-          <span key={stack} className="rounded bg-sunken px-2 py-0.5 text-[11px] text-ink-soft">
-            {stack}
-          </span>
-        ))}
-      </div>
-    </a>
+    <TiltCard max={4} className="h-full">
+      <a
+        href={`/go/${site.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block h-full overflow-hidden border border-line bg-surface transition-[border-color,box-shadow] duration-500 hover:border-shu-300 hover:shadow-[0_26px_50px_-28px_rgba(47,111,242,0.55),0_14px_30px_-22px_rgba(139,92,246,0.45)] focus-visible:outline-none"
+      >
+        <SitePreviewImage url={site.url} imageUrl={site.image_url} categoryLabel={site.categoryLabel} />
+        <div className="flex flex-wrap gap-1.5 p-4 sm:p-5">
+          {site.stacks.map((stack) => (
+            <span
+              key={stack}
+              className="rounded bg-sunken px-2 py-0.5 text-[11px] text-ink-soft transition-colors duration-300 group-hover:bg-shu-50 group-hover:text-accent-strong"
+            >
+              {stack}
+            </span>
+          ))}
+        </div>
+      </a>
+    </TiltCard>
   );
 }
 
@@ -49,9 +56,9 @@ function MobileWorks({ works, total }: Props) {
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {preview.map((site, i) => (
-            <Reveal key={site.id} delay={0.05 * i}>
+            <ClipReveal key={site.id} delay={0.06 * (i % 2)}>
               <WorkCard site={site} />
-            </Reveal>
+            </ClipReveal>
           ))}
         </div>
 
@@ -108,21 +115,31 @@ function StickyWorks({ works }: { works: FeaturedWork[] }) {
       style={{ height: `${trackVh}vh` }}
       aria-label={copy.title}
     >
-      <div className="sticky top-0 flex h-svh flex-col overflow-hidden bg-background pt-20 pb-8">
+      {/* see-through on white so the mist drifts behind the cards; solid over the night sky */}
+      <div className="sticky top-0 flex h-svh flex-col overflow-hidden pt-20 pb-8 space:bg-background">
         <div className="mx-auto w-full max-w-7xl shrink-0 px-6">
           <SectionHeading eyebrow="Works" title={copy.title} lead={copy.lead} className="mb-6 md:mb-8" />
-          <p className="mb-4 text-xs tracking-wide text-muted">
-            {visibleCount} / {works.length}
-          </p>
+          {/* how far through the collection the scroll has travelled */}
+          <div className="mb-4 flex items-center gap-4">
+            <p className="text-xs tracking-wide text-muted tabular-nums">
+              {visibleCount} / {works.length}
+            </p>
+            <div aria-hidden className="relative h-px max-w-xs flex-1 overflow-hidden bg-line">
+              <motion.div
+                style={{ scaleX: scrollYProgress }}
+                className="absolute inset-0 origin-left bg-gradient-to-r from-shu-500 via-sky-400 to-violet-500"
+              />
+            </div>
+          </div>
         </div>
 
-        <div ref={scrollerRef} className="min-h-0 flex-1 overflow-hidden px-6">
+        <div ref={scrollerRef} className="min-h-0 flex-1 overflow-hidden px-6 pt-2">
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-5 lg:grid-cols-3 xl:gap-6">
             {works.slice(0, visibleCount).map((site, index) => (
               <div
                 key={site.id}
-                className="animate-[workCardIn_420ms_ease-out]"
-                style={{ animationDelay: `${Math.min(index, 8) * 20}ms` }}
+                className="animate-[workCardIn_760ms_cubic-bezier(0.22,1,0.36,1)_backwards]"
+                style={{ animationDelay: `${Math.min(index, 8) * 30}ms` }}
               >
                 <WorkCard site={site} />
               </div>

@@ -1,8 +1,12 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import HeroSphereClient from "@/components/HeroSphereClient";
+import ClipReveal from "@/components/motion/ClipReveal";
+import TiltCard from "@/components/motion/TiltCard";
+import SceneBoundary from "@/components/SceneBoundary";
+import { useWebGLSupport } from "@/lib/webgl";
 import { useI18n, useTheme } from "@/components/PreferencesProvider";
 import SitePreviewImage from "@/components/SitePreviewImage";
 import type { PortfolioData } from "@/lib/portfolio/types";
@@ -16,8 +20,30 @@ const GOLD_BORDER = "border-gold-300 space:border-gold-300/30";
 
 function filterTabClass(isActive: boolean) {
   return isActive
-    ? "border-gold-500 bg-gold-300 text-ai-950 shadow-md ring-2 ring-gold-400/60"
+    ? "border-gold-500 text-ai-950"
     : `${GOLD_BORDER} bg-gold-100 text-sumi hover:bg-gold-200`;
+}
+
+/** Stack filter tab; the active highlight glides between tabs instead of jumping. */
+function FilterTab({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={`relative isolate rounded-full border px-4 py-2 text-sm font-medium transition-[color,background-color,transform] duration-300 active:scale-[0.97] ${filterTabClass(active)}`}
+    >
+      {active && (
+        <motion.span
+          layoutId="works-filter-active"
+          aria-hidden
+          className="absolute inset-0 -z-10 rounded-full bg-gold-300 shadow-md ring-2 ring-gold-400/60"
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      )}
+      {children}
+    </button>
+  );
 }
 
 type Props = {
@@ -31,6 +57,7 @@ export default function Works({ portfolio }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
   const { t } = useI18n();
   const { theme } = useTheme();
+  const webgl = useWebGLSupport();
 
   const { skillCategories, totalProjectCount, otherProjectCount } = portfolio;
 
@@ -50,9 +77,11 @@ export default function Works({ portfolio }: Props) {
   return (
     <section id="works" className="relative scroll-mt-20">
       {/* the orbiting globe belongs to the space theme; the white theme keeps the list plain */}
-      {theme === "space" && (
+      {theme === "space" && webgl && (
         <div aria-hidden className="pointer-events-none sticky top-0 z-0 -mb-[100vh] h-screen w-full">
-          <HeroSphereClient />
+          <SceneBoundary>
+            <HeroSphereClient />
+          </SceneBoundary>
         </div>
       )}
 
@@ -113,110 +142,117 @@ export default function Works({ portfolio }: Props) {
           </p>
 
           <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveFilter(ALL_FILTER)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${filterTabClass(activeFilter === ALL_FILTER)}`}
-            >
+            <FilterTab active={activeFilter === ALL_FILTER} onClick={() => setActiveFilter(ALL_FILTER)}>
               All
               <span className="ml-2 text-xs opacity-80">{totalProjectCount}</span>
-            </button>
+            </FilterTab>
 
             {skillCategories.map((category) => (
-              <button
+              <FilterTab
                 key={category.id}
-                type="button"
+                active={activeFilter === category.id}
                 onClick={() => setActiveFilter(category.id)}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${filterTabClass(activeFilter === category.id)}`}
               >
                 {category.label}
                 <span className="ml-2 text-xs opacity-80">{category.sites.length}</span>
-              </button>
+              </FilterTab>
             ))}
 
-            <button
-              type="button"
-              onClick={() => setActiveFilter(OTHER_FILTER)}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${filterTabClass(activeFilter === OTHER_FILTER)}`}
-            >
+            <FilterTab active={activeFilter === OTHER_FILTER} onClick={() => setActiveFilter(OTHER_FILTER)}>
               Other
               <span className="ml-2 text-xs opacity-80">{otherProjectCount}</span>
-            </button>
+            </FilterTab>
           </div>
         </motion.div>
 
-        {filteredCategories.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-line bg-surface px-6 py-16 text-center">
-            <p className="text-lg font-semibold text-sumi">{t.works.emptyTitle}</p>
-            <p className="mt-2 text-sm text-muted">
-              {t.works.emptyBody}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-12">
-            {filteredCategories.map((category, categoryIndex) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 32 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: 0.05 * categoryIndex }}
-              >
-                <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.24em] text-accent-alt">
-                      {isOtherCategory(category) ? "Other" : "Skill"}
-                    </p>
-                    <h3 className="text-xl md:text-2xl font-bold text-sumi">{category.label}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {category.stacks.map((stack) => (
-                      <span
-                        key={stack}
-                        className={`rounded-full border ${GOLD_BORDER} bg-gold-200 px-2.5 py-1 text-xs font-medium text-sumi`}
-                      >
-                        {stack}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-                  {category.sites.map((site) => (
-                    <a
-                      key={site.id}
-                      href={`/go/${site.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-300 hover:-translate-y-0.5 hover:border-gold-400 hover:shadow-lg"
+        {/* switching stacks cross-fades the whole result set; typing a search just updates it */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={activeFilter}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {filteredCategories.length === 0 ? (
+              <div className="rounded-3xl border border-dashed border-line bg-surface px-6 py-16 text-center">
+                <p className="text-lg font-semibold text-sumi">{t.works.emptyTitle}</p>
+                <p className="mt-2 text-sm text-muted">
+                  {t.works.emptyBody}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-14">
+                {filteredCategories.map((category) => (
+                  <div key={category.id}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-60px" }}
+                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between"
                     >
-                      <SitePreviewImage
-                        url={site.url}
-                        imageUrl={site.image_url}
-                        categoryLabel={category.label}
-                      />
-
-                      <div className="flex items-start justify-between gap-3 p-4">
-                        <div className="flex flex-wrap gap-1.5">
-                          {category.stacks.map((stack) => (
-                            <span
-                              key={`${site.id}-${stack}`}
-                              className="rounded bg-gold-100 px-2 py-0.5 text-[11px] text-ink-soft"
-                            >
-                              {stack}
-                            </span>
-                          ))}
-                        </div>
-                        <span className={`shrink-0 rounded-full border ${GOLD_BORDER} bg-gold-100 px-2 py-0.5 text-[10px] font-medium text-ink-soft transition group-hover:bg-gold-200`}>
-                          Visit
-                        </span>
+                      <div>
+                        <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-accent-alt">
+                          <span aria-hidden className="h-px w-6 bg-gradient-to-r from-sky-400 to-violet-500" />
+                          {isOtherCategory(category) ? "Other" : "Skill"}
+                        </p>
+                        <h3 className="text-xl md:text-2xl font-bold text-sumi">{category.label}</h3>
                       </div>
-                    </a>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
+                      <div className="flex flex-wrap gap-2">
+                        {category.stacks.map((stack) => (
+                          <span
+                            key={stack}
+                            className={`rounded-full border ${GOLD_BORDER} bg-gold-200 px-2.5 py-1 text-xs font-medium text-sumi`}
+                          >
+                            {stack}
+                          </span>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+                      {category.sites.map((site, siteIndex) => (
+                        <ClipReveal key={site.id} delay={0.07 * (siteIndex % 3)} className="h-full">
+                          <TiltCard max={4} className="h-full rounded-2xl">
+                            <a
+                              href={`/go/${site.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group block h-full overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,box-shadow] duration-500 hover:border-gold-400 hover:shadow-[0_26px_50px_-28px_rgba(47,111,242,0.55),0_14px_30px_-22px_rgba(139,92,246,0.45)] focus-visible:outline-none"
+                            >
+                              <SitePreviewImage
+                                url={site.url}
+                                imageUrl={site.image_url}
+                                categoryLabel={category.label}
+                              />
+
+                              <div className="flex items-start justify-between gap-3 p-4">
+                                <div className="flex flex-wrap gap-1.5">
+                                  {category.stacks.map((stack) => (
+                                    <span
+                                      key={`${site.id}-${stack}`}
+                                      className="rounded bg-gold-100 px-2 py-0.5 text-[11px] text-ink-soft"
+                                    >
+                                      {stack}
+                                    </span>
+                                  ))}
+                                </div>
+                                <span className={`shrink-0 rounded-full border ${GOLD_BORDER} bg-gold-100 px-2 py-0.5 text-[10px] font-medium text-ink-soft transition group-hover:bg-gold-200`}>
+                                  Visit <span aria-hidden className="inline-block transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                                </span>
+                              </div>
+                            </a>
+                          </TiltCard>
+                        </ClipReveal>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

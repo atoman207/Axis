@@ -57,7 +57,7 @@
   --gold-900: #0c4a6e;
 
   /* ---- surfaces ---- */
-  --band: #f4f7fb;                      /* alternating section tint */
+  --band: rgba(232, 239, 249, 0.42);    /* alternating section tint — translucent so the mist shows through */
   --surface: #ffffff;                   /* cards */
   --popover: #ffffff;                   /* floating panels, always opaque */
   --sunken: #f4f6f9;
@@ -266,8 +266,12 @@ textarea:-webkit-autofill:focus {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--washi-deep); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(26, 86, 219, 0.4);
+  background: linear-gradient(180deg, rgba(26, 86, 219, 0.5), rgba(139, 92, 246, 0.5));
   border-radius: 2px;
+}
+
+::selection {
+  background: rgba(86, 145, 251, 0.24);
 }
 
 /* ========= GLASS ========= */
@@ -310,14 +314,19 @@ textarea:-webkit-autofill:focus {
   100% { background-position: 0% 50%; }
 }
 
+/* Cinematic card entrance: rises, sharpens and opens from the bottom edge. */
 @keyframes workCardIn {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(36px) scale(0.96);
+    clip-path: inset(22% 4% 0% 4%);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
   }
 }
 
@@ -509,4 +518,506 @@ textarea:-webkit-autofill:focus {
 .nav-link:hover .nav-label-ja {
   opacity: 1;
   visibility: visible;
+}
+
+/* ===================================================================== */
+/* ========= MOTION — shared effects in blue · white · violet ========== */
+/* ===================================================================== */
+:root {
+  --glow-blue: 47, 111, 242;
+  --glow-sky: 56, 189, 248;
+  --glow-violet: 139, 92, 246;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ========= TILT CARD — cursor light + edge glow ========= */
+.tilt-card {
+  --mx: 50%;
+  --my: 50%;
+}
+
+.tilt-glare,
+.tilt-edge {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.tilt-glare {
+  background: radial-gradient(
+    560px circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.16),
+    rgba(var(--glow-violet), 0.08) 32%,
+    transparent 62%
+  );
+}
+
+/* 1px ring lit only near the cursor: the gradient is masked down to the border box */
+.tilt-edge {
+  padding: 1px;
+  background: radial-gradient(
+    320px circle at var(--mx) var(--my),
+    rgba(125, 211, 252, 0.95),
+    rgba(var(--glow-violet), 0.7) 38%,
+    transparent 70%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.tilt-card:hover > .tilt-glare,
+.tilt-card:hover > .tilt-edge,
+.tilt-card:focus-visible > .tilt-edge,
+.tilt-card:has(:focus-visible) > .tilt-edge {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .tilt-glare { display: none; }
+}
+
+/* ========= SHEEN — a light streak across a button on hover ========= */
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  pointer-events: none;
+  transform: translateX(-160%) skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+}
+
+.sheen:hover::after {
+  transform: translateX(320%) skewX(-20deg);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Soft halo that keeps breathing around the primary call to action */
+@keyframes glow-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--glow-sky), 0.45), 0 12px 32px -12px rgba(var(--glow-violet), 0.7); }
+  70%  { box-shadow: 0 0 0 14px rgba(var(--glow-sky), 0), 0 12px 32px -12px rgba(var(--glow-violet), 0.7); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--glow-sky), 0), 0 12px 32px -12px rgba(var(--glow-violet), 0.7); }
+}
+
+.cta-glow {
+  animation: glow-ring 2.8s ease-out infinite;
+}
+
+/* ========= HERO ATMOSPHERE ========= */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(125, 211, 252, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.07) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 28% 60%, #000 5%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 65% at 28% 60%, #000 5%, transparent 75%);
+}
+
+/* light that follows the cursor across the footage (desktop only) */
+.hero-spotlight {
+  background: radial-gradient(
+    560px circle at var(--sx, 30%) var(--sy, 55%),
+    rgba(86, 145, 251, 0.2),
+    rgba(var(--glow-violet), 0.12) 40%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+[data-spotlight="on"] .hero-spotlight {
+  opacity: 1;
+}
+
+@keyframes aurora-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33%      { transform: translate3d(6%, -5%, 0) scale(1.08); }
+  66%      { transform: translate3d(-5%, 4%, 0) scale(0.95); }
+}
+
+.aurora {
+  animation: aurora-drift 22s ease-in-out infinite;
+}
+
+.aurora--slow {
+  animation-duration: 30s;
+  animation-direction: reverse;
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(300%); }
+}
+
+/* One pass of light along a hairline (page headers) */
+@keyframes sweep-x {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* ========= PARTICLE WAVE (Three.js) ========= */
+.particle-wave canvas {
+  animation: fade-in 1.6s ease both;
+}
+
+/* ========= TECH STACK FIELD — CSS drift, paused off-screen ========= */
+@keyframes tech-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25%      { transform: translate3d(var(--dx1), var(--dy1), 0); }
+  50%      { transform: translate3d(var(--dx2), var(--dy2), 0); }
+  75%      { transform: translate3d(var(--dx3), var(--dy3), 0); }
+}
+
+.tech-drift {
+  animation: tech-drift var(--drift-dur, 16s) ease-in-out var(--drift-delay, 0s) infinite;
+  animation-play-state: paused;
+}
+
+.tech-field.is-visible .tech-drift {
+  animation-play-state: running;
+}
+
+/* ========= ARCHITECTURE DIAGRAM ========= */
+.arch-edge {
+  transition: opacity 0.45s ease;
+}
+
+.arch-edge path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.arch-edge-base {
+  stroke-width: 1.25;
+  stroke-opacity: 0.55;
+  stroke-dasharray: 100;
+  transition: stroke-width 0.45s ease, stroke-opacity 0.45s ease;
+}
+
+.arch-edge[data-state="on"] .arch-edge-base {
+  stroke-width: 1.75;
+  stroke-opacity: 1;
+}
+
+.arch-edge[data-state="dim"] {
+  opacity: 0.26;
+}
+
+/* data packets: a bright dash (and a wide faint twin as its glow) riding each connection */
+.arch-edge-glow,
+.arch-edge-pulse {
+  stroke-dasharray: 8 150;
+  stroke-dashoffset: 8;
+  visibility: hidden;
+  animation: arch-pulse var(--pulse-dur, 3.4s) linear var(--pulse-delay, 0s) infinite;
+  animation-play-state: paused;
+}
+
+.arch-edge-glow {
+  stroke-width: 8;
+  opacity: 0.22;
+}
+
+.arch-edge-pulse {
+  stroke-width: 2.25;
+}
+
+.arch-edge[data-state="on"] .arch-edge-pulse {
+  stroke-width: 3;
+}
+
+.arch.is-live .arch-edge-glow,
+.arch.is-live .arch-edge-pulse {
+  visibility: visible;
+  animation-play-state: running;
+}
+
+.arch.is-live.is-paused .arch-edge-glow,
+.arch.is-live.is-paused .arch-edge-pulse {
+  animation-play-state: paused;
+}
+
+/* the return trip of a two-way connection */
+.arch-packet--back > path {
+  animation-direction: reverse;
+}
+
+/* packet core: deep blue on paper, near-white on the night sky */
+:root,
+[data-theme="light"] {
+  --arch-pulse: #3355f0;
+}
+
+[data-theme="space"] {
+  --arch-pulse: #e0f2fe;
+}
+
+@keyframes arch-pulse {
+  from { stroke-dashoffset: 8; }
+  to   { stroke-dashoffset: -150; }
+}
+
+.arch-edge-label {
+  fill: var(--faint);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  /* a halo in the page colour keeps labels legible where they cross a line */
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  transition: fill 0.3s ease;
+}
+
+.arch-edge[data-state="on"] .arch-edge-label {
+  fill: var(--accent);
+}
+
+.arch-orbit {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: arch-spin 48s linear infinite;
+}
+
+.arch-orbit--reverse {
+  animation-duration: 72s;
+  animation-direction: reverse;
+}
+
+@keyframes arch-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes arch-halo {
+  0%   { transform: scale(0.9); opacity: 0.55; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+
+.arch-halo {
+  animation: arch-halo 3.2s ease-out infinite;
+}
+
+.arch-halo--late {
+  animation-delay: 1.6s;
+}
+
+/* ========= DEVELOPMENT FLOW — glowing progress line ========= */
+.flow-track {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--line);
+  pointer-events: none;
+}
+
+.flow-track[data-axis="x"] {
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.flow-track[data-axis="y"] {
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+.flow-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: 0 0;
+  box-shadow: 0 0 10px rgba(var(--glow-sky), 0.65), 0 0 24px rgba(var(--glow-violet), 0.4);
+}
+
+[data-axis="x"] > .flow-fill {
+  transform: scaleX(var(--flow, 0));
+  background: linear-gradient(90deg, #2f6ff2, #38bdf8 55%, #8b5cf6);
+}
+
+[data-axis="y"] > .flow-fill {
+  transform: scaleY(var(--flow, 0));
+  background: linear-gradient(180deg, #2f6ff2, #38bdf8 55%, #8b5cf6);
+}
+
+/* the bright point at the tip of the line */
+.flow-head {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #fff;
+  opacity: var(--flow-head, 0);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  box-shadow:
+    0 0 0 3px rgba(var(--glow-violet), 0.3),
+    0 0 14px 4px rgba(var(--glow-sky), 0.85),
+    0 0 30px 8px rgba(var(--glow-violet), 0.45);
+}
+
+[data-axis="x"] > .flow-head {
+  top: 50%;
+  left: calc(var(--flow, 0) * 100%);
+}
+
+[data-axis="y"] > .flow-head {
+  left: 50%;
+  top: calc(var(--flow, 0) * 100%);
+}
+
+@keyframes flow-ping {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* ========= SATELLITE CURSOR (space theme) ========= */
+/* SVG first for crisp edges; the PNG is for browsers without SVG cursors. Hotspot = the dish's feed. */
+[data-theme="space"] body {
+  cursor: url("/cursors/satellite.svg") 8 8, url("/cursors/satellite.png") 8 8, auto;
+}
+
+/* over anything clickable the satellite starts transmitting */
+[data-theme="space"] :is(a[href], button:not(:disabled), [role="button"], summary, label[for], select, .cursor-pointer) {
+  cursor: url("/cursors/satellite-link.svg") 8 8, url("/cursors/satellite-link.png") 8 8, pointer;
+}
+
+/* ========= AIRPLANE CURSOR (white theme) ========= */
+/* nose up-left at the hotspot; a white halo keeps it visible over the dark hero and footer */
+[data-theme="light"] body {
+  cursor: url("/cursors/airplane.svg") 4 4, url("/cursors/airplane.png") 4 4, auto;
+}
+
+/* over anything clickable the engines open up and leave contrails */
+[data-theme="light"] :is(a[href], button:not(:disabled), [role="button"], summary, label[for], select, .cursor-pointer) {
+  cursor: url("/cursors/airplane-link.svg") 4 4, url("/cursors/airplane-link.png") 4 4, pointer;
+}
+
+/* text fields keep the I-beam in both themes */
+[data-theme] :is(input:not([type="checkbox"], [type="radio"], [type="range"], [type="submit"], [type="button"]), textarea, [contenteditable="true"]) {
+  cursor: text;
+}
+
+/* ========= CLICK RIPPLES ========= */
+.click-ripple {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.click-ripple > i {
+  position: absolute;
+  left: -36px;
+  top: -36px;
+  width: 72px;
+  height: 72px;
+  border-radius: 9999px;
+  opacity: 0;
+  animation: ripple-out 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.click-ripple > i:nth-child(2) { animation-delay: 0.14s; }
+.click-ripple > i:nth-child(3) { animation-delay: 0.28s; }
+
+/* white theme: rings on water */
+.click-ripple--water > i {
+  border: 1.5px solid rgba(47, 111, 242, 0.5);
+  box-shadow: 0 0 14px rgba(var(--glow-violet), 0.18), inset 0 0 12px rgba(var(--glow-sky), 0.2);
+}
+
+.click-ripple--water > i:first-child {
+  background: radial-gradient(circle, rgba(86, 145, 251, 0.16), transparent 70%);
+}
+
+/* space theme: the satellite's signal pulse */
+.click-ripple--signal > i {
+  border: 1.5px solid rgba(125, 211, 252, 0.85);
+  box-shadow: 0 0 16px rgba(var(--glow-sky), 0.5);
+}
+
+.click-ripple--signal > i:nth-child(2) {
+  border-style: dashed;
+  border-color: rgba(167, 139, 250, 0.8);
+}
+
+@keyframes ripple-out {
+  0%   { transform: scale(0.08); opacity: 0.95; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* ========= MIST (white theme backdrop) ========= */
+.mist-canvas {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+
+.mist-canvas[data-ready="true"] {
+  opacity: 1;
+}
+
+.mist-fallback {
+  opacity: 0.8;
+}
+
+/* ========= WAVES — seamless periodic SVGs slid sideways ========= */
+@keyframes silk-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.silk-drift {
+  animation: silk-drift 50s linear infinite;
+}
+
+@keyframes silk-bob {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -10px, 0); }
+}
+
+.silk-bob {
+  animation: silk-bob 12s ease-in-out infinite;
+}
+
+/* ========= MARQUEE ========= */
+.marquee-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* ========= REDUCED MOTION ========= */
+/* Honour the OS setting wherever CSS drives motion; JS effects check the same query. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .arch-edge-glow,
+  .arch-edge-pulse,
+  .flow-head,
+  .hero-spotlight {
+    display: none;
+  }
 }

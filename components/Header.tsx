@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValueEvent, useScroll, useSpring } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import PreferenceControls from "@/components/PreferenceControls";
@@ -21,6 +21,12 @@ export default function Header() {
   const { lang, t } = useI18n();
   const showJa = lang === "ja";
 
+  // Reading progress drawn along the header's bottom edge; a soft shadow once the page moves.
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, mass: 0.3 });
+  const [scrolled, setScrolled] = useState(false);
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 8));
+
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
@@ -29,8 +35,15 @@ export default function Header() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 bg-chrome backdrop-blur-sm border-b border-line space:backdrop-blur-md"
+        className={`fixed top-0 left-0 right-0 z-50 bg-chrome backdrop-blur-sm border-b border-line transition-shadow duration-500 space:backdrop-blur-md ${
+          scrolled ? "shadow-[0_10px_30px_-18px_rgba(11,23,48,0.35)]" : ""
+        }`}
       >
+        <motion.span
+          aria-hidden
+          style={{ scaleX: progress }}
+          className="pointer-events-none absolute inset-x-0 -bottom-px h-[2px] origin-left bg-gradient-to-r from-shu-500 via-sky-400 to-violet-500"
+        />
         <div className="mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:h-18 sm:px-6 md:px-8 lg:h-20">
           <Link href="/" aria-label={t.header.home} className="flex items-center flex-shrink-0">
             <SiteLogo eager />

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#60a5fa"/>
+      <stop offset="0.55" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="foil" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbe7a6"/>
+      <stop offset="0.5" stop-color="#e2b54d"/>
+      <stop offset="1" stop-color="#a87824"/>
+    </linearGradient>
+  </defs>
+  <!-- drawn upright around the origin, then tipped so the antenna points up-left at the hotspot (8, 8) -->
+  <g transform="translate(18 18) rotate(-45)">
+    <!-- soft light halo keeps the shape readable on the darkest sky -->
+    <g fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="2.2" stroke-linejoin="round">
+      <rect x="-15.5" y="-3.2" width="9.5" height="6.4" rx="0.8"/>
+      <rect x="6" y="-3.2" width="9.5" height="6.4" rx="0.8"/>
+      <rect x="-4" y="-5" width="8" height="10" rx="1.4"/>
+    </g>
+    <!-- struts -->
+    <path d="M-6 0H-4M4 0H6" stroke="#cbd5e1" stroke-width="1.2"/>
+    <!-- solar panels -->
+    <g stroke="#0a1230" stroke-width="0.8">
+      <rect x="-15.5" y="-3.2" width="9.5" height="6.4" rx="0.8" fill="url(#panel)"/>
+      <rect x="6" y="-3.2" width="9.5" height="6.4" rx="0.8" fill="url(#panel)"/>
+    </g>
+    <path d="M-12.3 -3V3M-9.1 -3V3M9.2 -3V3M12.4 -3V3M-15.3 0H-6.2M6.2 0H15.3" stroke="#bfdbfe" stroke-opacity="0.8" stroke-width="0.5"/>
+    <!-- gold-foil body -->
+    <rect x="-4" y="-5" width="8" height="10" rx="1.4" fill="url(#foil)" stroke="#0a1230" stroke-width="0.8"/>
+    <path d="M-2.4 -3.2H2.4M-2.4 -1H2.4M-2.4 1.2H2.4" stroke="#8a5d14" stroke-opacity="0.55" stroke-width="0.5"/>
+    <!-- mast, dish and feed -->
+    <path d="M0 -5V-10.4" stroke="#e2e8f0" stroke-width="1.1"/>
+    <path d="M-3.4 -11.6Q0 -8.6 3.4 -11.6" fill="#f1f5f9" stroke="#0a1230" stroke-width="0.7"/>
+    <circle cx="0" cy="-13.2" r="1.15" fill="#7dd3fc" stroke="#0a1230" stroke-width="0.6"/>
+  </g>
+</svg>

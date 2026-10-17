@@ -133,6 +133,11 @@ const en: Dictionary = {
       lead: "From planning to operations, leave every stage you need with one team.",
       link: "Explore services",
     },
+    technology: {
+      title: "Full-stack engineering",
+      lead: "AI, frontend, backend, database and cloud — one team designs and builds every layer.",
+      link: "Explore our technology",
+    },
     works: {
       title: "Selected Work",
       lead: "A selection of the websites and web services we have delivered.",
@@ -568,7 +573,37 @@ const en: Dictionary = {
   technology: {
     title: "The Technology We Use",
     lead: "A proven, modern stack for scalable development.",
+    architecture: {
+      title: "AI at the core, every layer connected",
+      lead: "Frontend, backend, database and cloud — rather than building each in isolation, we design them as one system with AI at the center.",
+      hint: "Select a layer to see its role and key technologies.",
+      diagramLabel: "AXIS full-stack architecture diagram",
+      stackLabel: "Key technologies",
+      layers: {
+        ai: {
+          label: "AI & LLMs",
+          description: "Generative AI, RAG and AI agents woven into your workflows — the core layer for search, decisions and automation.",
+        },
+        frontend: {
+          label: "Frontend",
+          description: "Fast, intuitive and accessible interfaces in React and Next.js, with AI responses streamed in naturally.",
+        },
+        backend: {
+          label: "Backend",
+          description: "Robust APIs, authentication and business logic — where AI tool calls and third-party integrations are safely controlled.",
+        },
+        database: {
+          label: "Database",
+          description: "Business data and vector data modeled for the job, balancing RAG retrieval quality with everyday speed.",
+        },
+        cloud: {
+          label: "Cloud",
+          description: "Production environments on AWS, Azure and GCP with CI/CD, monitoring and scaling for reliable operation.",
+        },
+      },
+    },
     flowTitle: "Development Flow",
+    flowLead: "From requirements to operations and improvement — one team carries all seven stages without a hand-off.",
     flow: {
       requirement: "Requirements & discovery",
       architecture: "Design & tech selection",

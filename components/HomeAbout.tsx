@@ -1,5 +1,6 @@
 "use client";
 
+import CountUp from "@/components/motion/CountUp";
 import { useI18n } from "@/components/PreferencesProvider";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
@@ -25,12 +26,7 @@ export default function HomeAbout({ stats }: Props) {
     <section className="section-padding relative">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-2 lg:gap-16">
         <div>
-          <SectionHeading
-            eyebrow="About"
-            title={about.heading.map((line) => (
-              <span key={line} className="block">{line}</span>
-            ))}
-          />
+          <SectionHeading eyebrow="About" title={about.heading} />
         </div>
 
         <Reveal delay={0.1}>
@@ -42,9 +38,9 @@ export default function HomeAbout({ stats }: Props) {
 
           <dl className="mt-10 grid grid-cols-3 divide-x divide-line border-y border-line">
             {figures.map((figure) => (
-              <div key={figure.label} className="px-3 py-6 text-center first:pl-0 last:pr-0">
-                <dd className="text-3xl font-bold leading-none text-sumi sm:text-4xl">
-                  {figure.value}
+              <div key={figure.label} className="group px-3 py-6 text-center first:pl-0 last:pr-0">
+                <dd className="text-3xl font-bold leading-none text-sumi transition-colors duration-300 group-hover:text-accent sm:text-4xl">
+                  <CountUp value={figure.value} />
                   {figure.unit && <span className="ml-1 text-sm font-medium text-muted">{figure.unit}</span>}
                 </dd>
                 <dt className="mt-3 text-[11px] leading-snug text-muted sm:text-xs">{figure.label}</dt>

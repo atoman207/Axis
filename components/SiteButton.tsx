@@ -1,21 +1,30 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
+// Shared micro-interaction: a slight lift with a blue glow on hover, a press on click.
+const motionClass =
+  "transition-[color,border-color,box-shadow,transform] duration-300 ease-out " +
+  "hover:-translate-y-px hover:shadow-[0_12px_28px_-14px_rgba(47,111,242,0.6)] active:translate-y-0 active:scale-[0.98] " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ";
+
 const baseClass =
-  "group inline-flex items-center justify-center gap-1.5 rounded-full border bg-surface px-6 py-3 text-sm font-semibold text-sumi shadow-sm transition-colors duration-300 " +
+  "group inline-flex items-center justify-center gap-1.5 rounded-full border bg-surface px-6 py-3 text-sm font-semibold text-sumi shadow-sm " +
+  motionClass +
   "border-line-strong hover:border-yellow-400 hover:text-yellow-600 " +
   "disabled:cursor-wait disabled:opacity-70";
 
+// Keep label dark even in space theme (where --sumi becomes near-white).
 const onDarkClass =
-  "group inline-flex items-center justify-center gap-1.5 rounded-full border border-white/45 bg-white px-6 py-3 text-sm font-semibold text-sumi shadow-sm transition-colors duration-300 " +
-  "hover:border-yellow-400 hover:text-yellow-600 " +
+  "group inline-flex items-center justify-center gap-1.5 rounded-full border border-white/45 bg-white px-6 py-3 text-sm font-semibold text-[#0b1730] shadow-sm " +
+  motionClass +
+  "hover:border-yellow-400 hover:text-yellow-700 " +
   "disabled:cursor-wait disabled:opacity-70";
 
 function Arrow() {
   return (
     <span
       aria-hidden
-      className="inline-flex w-[1em] shrink-0 justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      className="inline-flex w-[1em] shrink-0 -translate-x-1 justify-center opacity-0 transition-[opacity,transform] duration-300 group-hover:translate-x-0 group-hover:opacity-100"
     >
       →
     </span>

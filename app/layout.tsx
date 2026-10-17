@@ -11,6 +11,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWidgets from "@/components/FloatingWidgets";
+import ClickRipples from "@/components/motion/ClickRipples";
+import MotionProvider from "@/components/motion/MotionProvider";
+import NavigationProgress from "@/components/motion/NavigationProgress";
 import PreferencesProvider from "@/components/PreferencesProvider";
 import SpaceBackground from "@/components/SpaceBackground";
 import { dictionaries } from "@/lib/i18n/dictionaries";
@@ -87,13 +90,17 @@ export default function RootLayout({
           })();
         `}</Script>
         <PreferencesProvider initialLang={DEFAULT_LANG} initialTheme={DEFAULT_THEME}>
-          <SpaceBackground />
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <FloatingWidgets />
-          </div>
+          <MotionProvider>
+            <NavigationProgress />
+            <ClickRipples />
+            <SpaceBackground />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <FloatingWidgets />
+            </div>
+          </MotionProvider>
         </PreferencesProvider>
       </body>
     </html>

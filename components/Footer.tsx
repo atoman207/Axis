@@ -42,7 +42,7 @@ const contactChannels = [
   },
   {
     name: "YOUTRUST",
-    href: "https://youtrust.jp/users/131019f770cc6e4a4f6b825939421b12",
+    href: "https://youtrust.jp/users/4c12c75a8320d69bbca6ef854e6cf876",
     icon: "/icons/youtrust.png",
     chip: "bg-white",
     iconClass: "h-6 w-6 object-contain",
