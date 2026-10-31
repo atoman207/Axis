@@ -73,7 +73,7 @@ export default function Hero() {
       data-hero-section
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="relative isolate flex h-[100vh] min-h-[640px] items-end overflow-hidden bg-[#060d1f] pt-20 pb-14 sm:pb-16 md:pb-20 lg:pb-24"
+      className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-[#060d1f] pt-28 pb-16 md:h-[100vh] md:min-h-[640px] md:pt-20 md:pb-20 lg:pb-24"
     >
       <motion.div
         aria-hidden
@@ -113,7 +113,7 @@ export default function Hero() {
         className="mx-auto w-full max-w-7xl px-6"
         style={reduced ? undefined : { y: copyY, opacity: copyOpacity }}
       >
-        <p className="mb-7 flex items-center gap-3 text-[10px] font-semibold tracking-[0.38em] text-sky-400 uppercase sm:text-[11px]">
+        <p className="font-en mb-7 flex items-center gap-4 text-[11px] font-medium tracking-[0.4em] text-sky-300 uppercase sm:text-xs">
           <motion.span
             aria-hidden
             className="h-px w-10 origin-left bg-gradient-to-r from-sky-300 to-violet-400"
@@ -130,7 +130,7 @@ export default function Hero() {
           </motion.span>
         </p>
 
-        <h1 className="font-serif text-[2.35rem] font-semibold leading-[1.35] tracking-[0.04em] text-white [text-shadow:0_2px_24px_rgba(6,13,31,0.45)] sm:text-5xl sm:leading-[1.3] lg:text-[3.65rem] lg:leading-[1.28]">
+        <h1 className="font-serif text-[2.35rem] font-semibold leading-[1.45] tracking-[0.08em] text-white [text-shadow:0_2px_24px_rgba(6,13,31,0.45)] sm:text-5xl sm:leading-[1.3] lg:text-[3.65rem] lg:leading-[1.28]">
           <MaskLines lines={t.hero.title} trigger="mount" delay={0.25} stagger={0.14} />
         </h1>
 
@@ -138,7 +138,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: EASE_OUT }}
-          className="mt-8 max-w-xl space-y-3.5 text-[0.9375rem] font-light leading-[1.95] tracking-[0.02em] text-sky-50/75 md:text-[1.05rem] md:leading-[2]"
+          className="mt-8 max-w-xl space-y-3.5 text-[0.9375rem] font-light leading-[2] tracking-[0.06em] text-sky-50/75 [word-break:auto-phrase] md:text-[1.05rem] md:leading-[2]"
         >
           {t.hero.lead.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>

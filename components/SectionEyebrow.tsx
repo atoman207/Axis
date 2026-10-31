@@ -12,9 +12,12 @@ type Props = {
   delay?: number;
 };
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 /**
- * English section label: sky-blue type with a yellow underline
- * that draws left → right the first time it scrolls into view.
+ * English section label in the Japanese editorial style: a fine hairline draws in,
+ * then the widely tracked label follows ("— SERVICE"). Centred labels get a hairline
+ * on both sides.
  */
 export default function SectionEyebrow({
   children,
@@ -25,31 +28,38 @@ export default function SectionEyebrow({
 }: Props) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-48px" });
+  const centered = align === "center";
+  const lineColor = tone === "onDark" ? "bg-sky-300/70" : "bg-accent/60";
+
+  const line = (origin: "left" | "right") => (
+    <motion.span
+      aria-hidden
+      className={`h-px w-8 sm:w-10 ${lineColor} ${origin === "left" ? "origin-left" : "origin-right"}`}
+      initial={{ scaleX: 0 }}
+      animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+      transition={{ duration: 0.9, delay, ease: EASE }}
+    />
+  );
 
   return (
     <p
       ref={ref}
       className={[
-        "mb-4 flex w-fit flex-col gap-1.5 text-sm font-bold tracking-[0.28em] uppercase sm:text-[0.9375rem]",
-        tone === "onDark" ? "text-sky-400" : "text-sky-500",
-        align === "center" ? "mx-auto items-center" : "items-start",
+        "font-en mb-5 flex w-fit items-center gap-4 text-xs font-medium tracking-[0.34em] uppercase sm:text-[0.8125rem]",
+        tone === "onDark" ? "text-sky-300" : "text-accent",
+        centered ? "mx-auto" : "",
         className,
       ].join(" ")}
     >
+      {line(centered ? "right" : "left")}
       <motion.span
-        initial={{ opacity: 0, x: -10 }}
-        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-        transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, x: -8 }}
+        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
+        transition={{ duration: 0.7, delay: delay + 0.25, ease: EASE }}
       >
         {children}
       </motion.span>
-      <motion.span
-        aria-hidden
-        className="h-[2.5px] w-full origin-left rounded-full bg-yellow-400"
-        initial={{ scaleX: 0 }}
-        animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 0.75, delay: delay + 0.12, ease: [0.22, 1, 0.36, 1] }}
-      />
+      {centered && line("left")}
     </p>
   );
 }

@@ -39,7 +39,7 @@ export default function HomeAbout({ stats }: Props) {
           <dl className="mt-10 grid grid-cols-3 divide-x divide-line border-y border-line">
             {figures.map((figure) => (
               <div key={figure.label} className="group px-3 py-6 text-center first:pl-0 last:pr-0">
-                <dd className="text-3xl font-bold leading-none text-sumi transition-colors duration-300 group-hover:text-accent sm:text-4xl">
+                <dd className="font-en text-4xl font-medium leading-none text-sumi transition-colors duration-300 group-hover:text-accent sm:text-5xl">
                   <CountUp value={figure.value} />
                   {figure.unit && <span className="ml-1 text-sm font-medium text-muted">{figure.unit}</span>}
                 </dd>

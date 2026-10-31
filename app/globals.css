@@ -204,8 +204,12 @@ html {
 
 /* ========= TYPOGRAPHY ========= */
 :root {
-  --font-sans: "Noto Sans JP";
-  --font-serif: "Noto Serif JP";
+  /* next/font CSS variables from app/layout.tsx */
+  --font-sans: var(--font-noto-sans-jp), "Noto Sans JP";
+  /* a refined, traditional mincho for headlines */
+  --font-serif: var(--font-shippori-mincho), "Shippori Mincho";
+  /* clean geometric Latin for small English labels and display words */
+  --font-en: var(--font-jost), "Jost";
 }
 
 @utility font-sans {
@@ -213,21 +217,55 @@ html {
 }
 
 @utility font-serif {
-  font-family: var(--font-serif), serif;
+  font-family: var(--font-serif), "Noto Serif JP", serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif), serif;
-  /* proportional kana: tighter, more even Japanese headlines */
-  font-feature-settings: "palt";
-  letter-spacing: 0.03em;
+@utility font-en {
+  font-family: var(--font-en), var(--font-sans), sans-serif;
+}
+
+/* In the base layer so a heading's own tracking-* utilities can still adjust it. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif), "Noto Serif JP", serif;
+    /* proportional kana, with the airy spacing Japanese editorial headlines use */
+    font-feature-settings: "palt";
+    letter-spacing: 0.08em;
+    /* break Japanese at natural phrase boundaries, never mid-word (Chrome/Edge 119+) */
+    word-break: auto-phrase;
+    text-wrap: balance;
+  }
+
+  /* no lone character stranded on a paragraph's last line */
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Mincho reads most refined at semibold; bold headings step down one weight. */
+:is(h1, h2, h3, h4, h5, h6).font-bold {
+  font-weight: 600;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
+  /* a touch of air between Japanese characters, as in print */
+  letter-spacing: 0.04em;
   overflow-x: hidden;
+}
+
+/* Large outlined English word set behind a section heading (desktop only). */
+.section-watermark {
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--accent) 16%, transparent);
+  font-family: var(--font-en), sans-serif;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 input:-webkit-autofill,
@@ -468,10 +506,11 @@ textarea:-webkit-autofill:focus {
 }
 
 /* ========= SPACING ========= */
-.section-padding { padding: 84px 0; }
+/* generous whitespace between sections — the single biggest lever for a calm, premium feel */
+.section-padding { padding: 96px 0; }
 
 @media (min-width: 768px) {
-  .section-padding { padding: 120px 0; }
+  .section-padding { padding: 168px 0; }
 }
 
 .page-content > section.section-padding:first-child,

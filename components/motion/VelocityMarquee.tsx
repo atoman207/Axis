@@ -94,7 +94,7 @@ export default function VelocityMarquee({ primary, secondary }: Props) {
         items={primary.map((word, i) => (
           <span
             key={word}
-            className={`px-6 font-serif text-[clamp(2.4rem,6.5vw,5.5rem)] leading-none font-semibold tracking-[0.02em] uppercase md:px-10 ${
+            className={`font-en px-6 text-[clamp(2.4rem,6.5vw,5.5rem)] leading-none font-medium tracking-[0.06em] uppercase md:px-10 ${
               i % 2 === 0 ? "marquee-outline" : "gradient-text"
             }`}
           >

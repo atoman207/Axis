@@ -150,7 +150,7 @@ export default function DevFlow() {
             </span>
 
             <div className="pt-0.5 lg:pt-0">
-              <div className="font-mono text-xs text-faint transition-colors duration-500 group-data-[reached]:text-accent">
+              <div className="font-en text-xs tracking-[0.2em] text-faint transition-colors duration-500 group-data-[reached]:text-accent">
                 {stage.step}
               </div>
               <div className="text-sm font-semibold text-sumi">{stage.title}</div>

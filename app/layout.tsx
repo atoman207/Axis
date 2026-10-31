@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import "@fontsource/noto-sans-jp/300.css";
-import "@fontsource/noto-sans-jp/400.css";
-import "@fontsource/noto-sans-jp/500.css";
-import "@fontsource/noto-sans-jp/700.css";
-import "@fontsource/noto-serif-jp/400.css";
-import "@fontsource/noto-serif-jp/600.css";
-import "@fontsource/noto-serif-jp/700.css";
+import { Jost, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -19,6 +13,30 @@ import PreferencesProvider from "@/components/PreferencesProvider";
 import SpaceBackground from "@/components/SpaceBackground";
 import { dictionaries } from "@/lib/i18n/dictionaries";
 import { DEFAULT_LANG, DEFAULT_THEME } from "@/lib/preferences/config";
+
+// CJK fonts are large; disable preload so Next doesn't inject hundreds of subset links.
+const notoSansJP = Noto_Sans_JP({
+  weight: ["300", "400", "500", "700"],
+  preload: false,
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+  adjustFontFallback: false,
+});
+
+const shipporiMincho = Shippori_Mincho({
+  weight: ["500", "600", "700"],
+  preload: false,
+  display: "swap",
+  variable: "--font-shippori-mincho",
+  adjustFontFallback: false,
+});
+
+const jost = Jost({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jost",
+});
 
 const meta = dictionaries[DEFAULT_LANG].meta;
 
@@ -55,7 +73,7 @@ export default function RootLayout({
       lang={DEFAULT_LANG}
       data-theme={DEFAULT_THEME}
       data-scroll-behavior="smooth"
-      className="h-full"
+      className={`h-full ${notoSansJP.variable} ${shipporiMincho.variable} ${jost.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-full antialiased">

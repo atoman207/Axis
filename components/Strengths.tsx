@@ -32,7 +32,7 @@ export default function Strengths() {
                 transition={{ duration: 1.2, delay: 0.1 + 0.08 * i, ease: EASE_OUT }}
               />
               <Reveal delay={0.06 * i} className="flex gap-6 py-8 md:py-10">
-                <span className="gradient-text text-3xl font-bold leading-none transition-[filter] duration-500 group-hover:drop-shadow-[0_0_14px_rgba(139,92,246,0.45)] md:text-4xl">
+                <span className="gradient-text font-en text-4xl font-normal leading-none transition-[filter] duration-500 group-hover:drop-shadow-[0_0_14px_rgba(139,92,246,0.45)] md:text-4xl">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>

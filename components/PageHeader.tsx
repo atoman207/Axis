@@ -84,7 +84,7 @@ export default function PageHeader({ page, backgroundImage }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           aria-label="Breadcrumb"
-          className={`mb-8 flex items-center gap-2 text-[11px] tracking-wider ${
+          className={`font-en mb-8 flex items-center gap-2 text-[11px] tracking-[0.24em] ${
             onImage ? "text-white/55" : "text-faint"
           }`}
         >

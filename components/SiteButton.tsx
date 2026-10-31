@@ -1,32 +1,34 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-// Shared micro-interaction: a slight lift with a blue glow on hover, a press on click.
-const motionClass =
-  "transition-[color,border-color,box-shadow,transform] duration-300 ease-out " +
-  "hover:-translate-y-px hover:shadow-[0_12px_28px_-14px_rgba(47,111,242,0.6)] active:translate-y-0 active:scale-[0.98] " +
+// Calm, slow colour change on hover and a small press — no lift, no glow.
+const interaction =
+  "transition-[color,background-color,border-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] " +
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ";
 
+// Hairline outline on paper; on hover it fills with ink.
 const baseClass =
-  "group inline-flex items-center justify-center gap-1.5 rounded-full border bg-surface px-6 py-3 text-sm font-semibold text-sumi shadow-sm " +
-  motionClass +
-  "border-line-strong hover:border-yellow-400 hover:text-yellow-600 " +
+  "group inline-flex items-center justify-center gap-4 rounded-full border border-sumi/30 bg-surface px-7 py-3.5 text-sm font-medium tracking-[0.1em] text-sumi " +
+  interaction +
+  "hover:border-sumi hover:bg-sumi hover:text-background " +
   "disabled:cursor-wait disabled:opacity-70";
 
-// Keep label dark even in space theme (where --sumi becomes near-white).
+// White face over photos and dark bands. The label stays dark even in the space theme
+// (where --sumi becomes near-white); on hover the face clears to an outline.
 const onDarkClass =
-  "group inline-flex items-center justify-center gap-1.5 rounded-full border border-white/45 bg-white px-6 py-3 text-sm font-semibold text-[#0b1730] shadow-sm " +
-  motionClass +
-  "hover:border-yellow-400 hover:text-yellow-700 " +
+  "group inline-flex items-center justify-center gap-4 rounded-full border border-white bg-white px-7 py-3.5 text-sm font-medium tracking-[0.1em] text-[#0b1730] " +
+  interaction +
+  "hover:bg-white/0 hover:text-white " +
   "disabled:cursor-wait disabled:opacity-70";
 
+/** A fine line arrow that stretches on hover. */
 function Arrow() {
   return (
     <span
       aria-hidden
-      className="inline-flex w-[1em] shrink-0 -translate-x-1 justify-center opacity-0 transition-[opacity,transform] duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+      className="relative inline-block h-px w-5 shrink-0 bg-current transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-8"
     >
-      →
+      <span className="absolute top-1/2 right-px h-[7px] w-[7px] -translate-y-1/2 rotate-45 border-t border-r border-current" />
     </span>
   );
 }
@@ -54,15 +56,13 @@ function shellClass(tone: CommonProps["tone"], className: string) {
 function Label({ children, hideArrow }: { children: ReactNode; hideArrow?: boolean }) {
   return (
     <>
-      <span className="inline-block origin-center transition-transform duration-300 group-hover:scale-110">
-        {children}
-      </span>
+      <span>{children}</span>
       {!hideArrow && <Arrow />}
     </>
   );
 }
 
-/** Pill CTA used across the site — white face, border, hover grows text only and reveals → */
+/** Pill CTA used across the site — hairline outline that fills with ink on hover, with a line arrow. */
 export default function SiteButton(props: LinkProps | NativeButtonProps) {
   const tone = props.tone ?? "default";
   const className = props.className ?? "";
