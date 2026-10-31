@@ -30,6 +30,7 @@ Open [http://localhost:3000](http://localhost:3000). The site runs with no envir
 - `lib/i18n/ja.ts`, `lib/i18n/en.ts` — all wording, in Japanese and English.
 - `lib/navigation.ts` — the main menu.
 - `lib/portfolio/seed-data.ts` — the work list shown on `/works`; screenshots are in `public/sites`.
+- `lib/portfolio/local-images.json` — list of available screenshots, regenerated before every build by `scripts/generate-portfolio-images.mjs`.
 - `app/globals.css` — colours for the white (default) and space themes.
 - `scripts/generate-icons.mjs` — rebuilds the favicon and app icons from `public/propile_avatar.png`.
 
@@ -45,3 +46,9 @@ Nothing is required. Create `.env.local` only to turn these features on:
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `HIRAI_ADMIN_KEY`     | The work-list admin screen at `/hirai`.                                                              |
 
 `.env*` files are git-ignored; never commit real keys.
+
+## Deploying to Netlify
+
+Netlify builds the site from GitHub with the settings in `netlify.toml` (build command `npm run build`, publish directory `.next`) and its Next.js runtime, which it adds automatically. Node.js 24 comes from `engines` in `package.json`. To turn on the optional features above, add the same variables under **Site configuration → Environment variables** and redeploy.
+
+Server code must never read files from `public/`, for example with `fs` and `process.cwd()`. That makes Next.js copy the whole folder (300MB+ of images and video) into the server function, and Netlify rejects the upload ("request body too large"; the limit is 50MB zipped). `public/` is served by Netlify's CDN, so the server never needs it; `next.config.ts` also excludes it from the server bundle. To check a deploy locally, run `npx netlify-cli build --offline` and look at the size of `.netlify/functions/___netlify-server-handler.zip`.

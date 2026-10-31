@@ -11,12 +11,14 @@ const nextConfig: NextConfig = {
   },
   // Keep native image tooling out of the traced server graph when possible.
   serverExternalPackages: ["sharp"],
-  // @fontsource JP packages are 50–90MB each; never copy them into
-  // Netlify's ___netlify-server-handler (50MB zipped upload limit).
+  // Keep large files out of Netlify's ___netlify-server-handler (50MB zipped upload limit):
+  // @fontsource JP packages are 50–90MB each, and public/ (300MB+) is served by the CDN,
+  // never read by server code.
   outputFileTracingExcludes: {
     "*": [
       "node_modules/@fontsource/**/*",
       "node_modules/@fontsource-variable/**/*",
+      "public/**/*",
     ],
   },
 };
