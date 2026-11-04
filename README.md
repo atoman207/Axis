@@ -47,8 +47,10 @@ Nothing is required. Create `.env.local` only to turn these features on:
 
 `.env*` files are git-ignored; never commit real keys.
 
-## Deploying to Netlify
+## Deploying to Vercel
 
-Netlify builds the site from GitHub with the settings in `netlify.toml` (build command `npm run build`, publish directory `.next`) and its Next.js runtime, which it adds automatically. Node.js 24 comes from `engines` in `package.json`. To turn on the optional features above, add the same variables under **Site configuration → Environment variables** and redeploy.
+Connect the GitHub repo in the Vercel dashboard. `vercel.json` sets install/build commands that clear an injected `npm_config_cache_dir` env var current npm rejects. Node.js 24 comes from `engines` in `package.json`.
 
-Server code must never read files from `public/`, for example with `fs` and `process.cwd()`. That makes Next.js copy the whole folder (300MB+ of images and video) into the server function, and Netlify rejects the upload ("request body too large"; the limit is 50MB zipped). `public/` is served by Netlify's CDN, so the server never needs it; `next.config.ts` also excludes it from the server bundle. To check a deploy locally, run `npx netlify-cli build --offline` and look at the size of `.netlify/functions/___netlify-server-handler.zip`.
+To turn on the optional features above, add the same variables under **Project → Settings → Environment Variables** and redeploy.
+
+Server code must never read files from `public/` (for example with `fs` and `process.cwd()`). That makes Next.js copy the whole folder (300MB+ of images and video) into the serverless function and can fail Vercel’s function size limit. `public/` is served by the CDN; `next.config.ts` excludes it from the server bundle.

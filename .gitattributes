@@ -1,0 +1,2 @@
+# Shell scripts must use LF so Vercel/Linux can execute them.
+*.sh text eol=lf

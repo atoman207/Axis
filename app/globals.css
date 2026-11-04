@@ -204,12 +204,13 @@ html {
 
 /* ========= TYPOGRAPHY ========= */
 :root {
-  /* next/font CSS variables from app/layout.tsx */
-  --font-sans: var(--font-noto-sans-jp), "Noto Sans JP";
+  /* Loaded via Google Fonts stylesheet in app/layout.tsx (not next/font/google —
+     Next 16 builds flake on extensionless kit URLs from fonts.gstatic.com). */
+  --font-sans: "Noto Sans JP";
   /* a refined, traditional mincho for headlines */
-  --font-serif: var(--font-shippori-mincho), "Shippori Mincho";
+  --font-serif: "Shippori Mincho";
   /* clean geometric Latin for small English labels and display words */
-  --font-en: var(--font-jost), "Jost";
+  --font-en: "Jost";
 }
 
 @utility font-sans {

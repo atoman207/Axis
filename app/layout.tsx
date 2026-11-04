@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Jost, Noto_Sans_JP, Shippori_Mincho } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,31 +13,14 @@ import SpaceBackground from "@/components/SpaceBackground";
 import { dictionaries } from "@/lib/i18n/dictionaries";
 import { DEFAULT_LANG, DEFAULT_THEME } from "@/lib/preferences/config";
 
-// CJK fonts are large; disable preload so Next doesn't inject hundreds of subset links.
-const notoSansJP = Noto_Sans_JP({
-  weight: ["300", "400", "500", "700"],
-  preload: false,
-  display: "swap",
-  variable: "--font-noto-sans-jp",
-  adjustFontFallback: false,
-});
-
-const shipporiMincho = Shippori_Mincho({
-  weight: ["500", "600", "700"],
-  preload: false,
-  display: "swap",
-  variable: "--font-shippori-mincho",
-  adjustFontFallback: false,
-});
-
-const jost = Jost({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jost",
-});
-
 const meta = dictionaries[DEFAULT_LANG].meta;
+
+// Load fonts via CSS links (not next/font/google). Next 16 intermittently fails
+// builds when Google returns extensionless /l/font?kit=… URLs
+// (turbopack: "queries have exactly one entry"). Links keep fonts off the
+// serverless bundle and make Vercel builds deterministic.
+const FONT_STYLESHEET =
+  "https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;600;700&display=swap";
 
 export const metadata: Metadata = {
   title: {
@@ -73,9 +55,14 @@ export default function RootLayout({
       lang={DEFAULT_LANG}
       data-theme={DEFAULT_THEME}
       data-scroll-behavior="smooth"
-      className={`h-full ${notoSansJP.variable} ${shipporiMincho.variable} ${jost.variable}`}
+      className="h-full"
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={FONT_STYLESHEET} />
+      </head>
       <body className="min-h-full antialiased">
         <Script id="pref-bootstrap" strategy="beforeInteractive">{`
           (function () {
